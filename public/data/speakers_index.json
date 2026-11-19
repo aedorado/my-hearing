@@ -722,7 +722,7 @@
     "name": "Madhavananda Das",
     "slug": "madhavananda-das",
     "description": "Gopal Jiu Publications, Sri Jagannath & Gour Govinda Swami katha",
-    "total_lectures": 170,
+    "total_lectures": 426,
     "sources": [
       "youtube"
     ],
@@ -744,8 +744,32 @@
         "count": 7
       },
       {
+        "name": "Meeting in Kuruksetra",
+        "count": 119
+      },
+      {
         "name": "Prema-bhakti-candrika",
         "count": 120
+      },
+      {
+        "name": "Pure Bhakti",
+        "count": 23
+      },
+      {
+        "name": "Puri Jagannath Katha",
+        "count": 38
+      },
+      {
+        "name": "Radharani",
+        "count": 3
+      },
+      {
+        "name": "Vraja Lila Demons",
+        "count": 13
+      },
+      {
+        "name": "Vraja-līlā Kahānī",
+        "count": 60
       }
     ]
   },

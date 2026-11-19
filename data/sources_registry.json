@@ -585,7 +585,61 @@
       "added_count": 6,
       "total_speaker_count": 170,
       "timestamp": "2026-11-19T10:56:00.936037+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pyOynl8llDnUJSEAER8s9bF",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Meeting in Kuruksetra",
+      "added_count": 119,
+      "total_speaker_count": 289,
+      "timestamp": "2026-11-19T11:06:45.591574+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pyhKt0mhxIprrgfMQhoQpdp",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Vraja Lila Demons",
+      "added_count": 13,
+      "total_speaker_count": 302,
+      "timestamp": "2026-11-19T11:06:48.066670+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pxNkwF8_-Nl_yEfyv_diLj0",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Vraja-līlā Kahānī",
+      "added_count": 60,
+      "total_speaker_count": 362,
+      "timestamp": "2026-11-19T11:06:52.456428+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pyE2I9XKqypWrk3gF13Xxit",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Radharani",
+      "added_count": 3,
+      "total_speaker_count": 365,
+      "timestamp": "2026-11-19T11:06:54.879273+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pxfgf8OQDJcGt7PW63mSa9u",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Pure Bhakti",
+      "added_count": 23,
+      "total_speaker_count": 388,
+      "timestamp": "2026-11-19T11:06:57.571862+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pydrnPcmy0qCGWduc3LxxYy",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Puri Jagannath Katha",
+      "added_count": 38,
+      "total_speaker_count": 426,
+      "timestamp": "2026-11-19T11:07:00.453285+00:00"
     }
   ],
-  "updated_at": "2026-11-19T10:56:00.936725+00:00"
+  "updated_at": "2026-11-19T11:07:00.453913+00:00"
 }
