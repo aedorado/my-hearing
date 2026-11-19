@@ -17,7 +17,6 @@ SPEAKERS_DIR = os.path.join(DATA_DIR, "speakers")
 PUBLIC_SPEAKERS_DIR = os.path.join(PUBLIC_DATA_DIR, "speakers")
 CATALOG_JSON = os.path.join(DATA_DIR, "catalog.json")
 SPEAKERS_INDEX_JSON = os.path.join(DATA_DIR, "speakers_index.json")
-CATALOG_JS = os.path.join(DATA_DIR, "catalog-data.js")
 
 # The 9 canonical speakers in strict alphabetical order
 EXPECTED_SPEAKERS = [
@@ -106,12 +105,6 @@ def main():
         if os.path.exists(src):
             with open(src, "r", encoding="utf-8") as f_in, open(dst, "w", encoding="utf-8") as f_out:
                 f_out.write(f_in.read())
-
-    # Write catalog-data.js for offline/zero-CORS usage
-    with open(CATALOG_JS, "w", encoding="utf-8") as f:
-        f.write("/* Auto-generated catalog cache */\n")
-        f.write(f"window.SPEAKERS_INDEX = {json.dumps(speaker_stats, ensure_ascii=False)};\n")
-        f.write(f"window.CATALOG_DATA = {json.dumps(all_lectures, ensure_ascii=False)};\n")
 
     print("\n" + "=" * 60)
     print(f"🎉 MASTER CATALOG BUILT SUCCESSFULLY")

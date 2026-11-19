@@ -722,7 +722,7 @@
     "name": "Madhavananda Das",
     "slug": "madhavananda-das",
     "description": "Gopal Jiu Publications, Sri Jagannath & Gour Govinda Swami katha",
-    "total_lectures": 164,
+    "total_lectures": 170,
     "sources": [
       "youtube"
     ],
@@ -730,6 +730,10 @@
       {
         "name": "Embankment of Separation",
         "count": 31
+      },
+      {
+        "name": "Gopi Gita Appreciation (with Amarendra Das)",
+        "count": 6
       },
       {
         "name": "In Search of a True Disciple",

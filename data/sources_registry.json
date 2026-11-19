@@ -576,7 +576,16 @@
       "added_count": 0,
       "total_speaker_count": 176,
       "timestamp": "2026-11-19T16:22:43.835572"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLuO9GcLbR5sSpqmXRPiLdov6X7pMJw3zr",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Gopi Gita Appreciation, with Madhavananda P and Amarendra P",
+      "added_count": 6,
+      "total_speaker_count": 170,
+      "timestamp": "2026-11-19T10:56:00.936037+00:00"
     }
   ],
-  "updated_at": "2026-11-19T10:40:09.832369+00:00"
+  "updated_at": "2026-11-19T10:56:00.936725+00:00"
 }

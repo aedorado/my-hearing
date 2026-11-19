@@ -12,11 +12,11 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
   3. **Bhurijana Das** (1,882 audio lectures)
   4. **Hari Parshad Das** (675 lectures)
   5. **Indradyumna Swami** (413 lectures)
-  6. **Madhavananda Das** (164 lectures)
+  6. **Madhavananda Das** (170 lectures)
   7. **Radha Govinda Das Goswami** (1,842 audio lectures)
   8. **Radhika Raman Das** (176 lectures)
   9. **Sacinandana Swami** (7,011 audio lectures)
-  - **Total Catalog**: **13,000 lectures**
+  - **Total Catalog**: **13,006 lectures**
 - **Unified Media Player**:
   - Seamlessly streams both **YouTube videos/audio** and direct **HTML5 MP3 audio** (from ISKCON Desire Tree and Saranagati Library).
   - Floating bottom player with scrub timeline, 10s forward/rewind, speed control (`0.75x` – `2.0x`), and volume slider.
@@ -56,11 +56,12 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
   - *Brhad Bhagavatamrta Vol 1 - Narada Muni's Journey* (`PLOlsz8SWVWGE2cweuW3DodJSQwlFB8ivp`) — 118 lectures
   - *Brhad Bhagavatamrta Vol 2 - Gopa Kumar's Journey* (`PLOlsz8SWVWGHAwBMZObnAyK65eBSGqiLE`) — 238 lectures
   - *Gopal Champu (Purva)* (`PLP3jBUDmoHYI`) — 23 lectures
-- **Madhavananda Das**:
+- **Madhavananda Das (5 Playlists)**:
   - *Embankment of Separation* (`PLDXWEweAZ-pw3CwF3GUBsoDnzw-Y8YKsC`) — 31 lectures
   - *Lives of the Acaryas* (`PLDXWEweAZ-pw95aDUgQlF8ccWsiNGKEmq`) — 7 lectures
   - *Prema-bhakti-candrika* (`PLDXWEweAZ-pzMpUMyZV1eiLEcRZDIyMUT`) — 120 lectures
   - *In Search of a True Disciple* (`PLDXWEweAZ-pxkyu2w3sbFth5-s5RS2WK_`) — 6 lectures
+  - *Gopi Gita Appreciation (with Amarendra Das)* (`PLuO9GcLbR5sSpqmXRPiLdov6X7pMJw3zr`) — 6 lectures
 - **Indradyumna Swami (20 Playlists)**:
   - *Stimulation for Ecstatic Love* (`PLOLQFA19eqhBgw1ZMuwLBL5FQQyRvroWc`) — 204 lectures
   - *The Binding Rope of Spotless Love* (`PLOLQFA19eqhCDyIMvwy36nK7tmytl3DWe`) — 7 lectures

@@ -5,7 +5,7 @@ import { CatalogueClient } from "@/components/CatalogueClient";
 
 export default function HomePage() {
   const speakersIndexPath = path.join(process.cwd(), "data", "speakers_index.json");
-  const defaultSpeakerPath = path.join(process.cwd(), "data", "speakers", "hari-parshad-das.json");
+  const defaultSpeakerPath = path.join(process.cwd(), "data", "speakers", "amarendra-das.json");
 
   let speakers: Speaker[] = [];
   let initialLectures: Lecture[] = [];
@@ -25,7 +25,7 @@ export default function HomePage() {
     <CatalogueClient
       initialSpeakers={speakers}
       initialLectures={initialLectures}
-      initialSpeakerSlug="hari-parshad-das"
+      initialSpeakerSlug="amarendra-das"
     />
   );
 }
