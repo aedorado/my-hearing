@@ -18,13 +18,14 @@ PUBLIC_SPEAKERS_DIR = os.path.join(PUBLIC_DATA_DIR, "speakers")
 CATALOG_JSON = os.path.join(DATA_DIR, "catalog.json")
 SPEAKERS_INDEX_JSON = os.path.join(DATA_DIR, "speakers_index.json")
 
-# The 9 canonical speakers in strict alphabetical order
+# The canonical speakers in strict alphabetical order
 EXPECTED_SPEAKERS = [
     {"name": "Amarendra Das", "slug": "amarendra-das", "description": "Inspiring Bhagavad Gita & Srimad Bhagavatam discourses"},
     {"name": "Balaram Shakti Das", "slug": "balaram-shakti-das", "description": "In-depth Sandarbha and Gaudiya Vaishnava philosophy"},
     {"name": "Bhurijana Das", "slug": "bhurijana-das", "description": "Classic ISKCON teacher, author, and Bhagavat Subodhini seminars"},
     {"name": "Hari Parshad Das", "slug": "hari-parshad-das", "description": "Scholarly Vaishnava katha, Upadeshamrita & Caitanya Caritamrta"},
     {"name": "Indradyumna Swami", "slug": "indradyumna-swami", "description": "Vrindavan Parikrama, Polish Tour, kirtans and nectar discourses"},
+    {"name": "Keshav Anand Das", "slug": "keshav-anand-das", "description": "Inspiring Hindi discourses on Bhagavad Gita, Srimad Bhagavatam & Gaudiya philosophy"},
     {"name": "Madhavananda Das", "slug": "madhavananda-das", "description": "Gopal Jiu Publications, Sri Jagannath & Gour Govinda Swami katha"},
     {"name": "Radha Govinda Das Goswami", "slug": "radha-govinda-das-goswami", "description": "Soul-stirring Srimad Bhagavatam Saptah & Krishna lila katha"},
     {"name": "Radhika Raman Das", "slug": "radhika-raman-das", "description": "Bhagavata Podcast, Gita insights, and academic Vaishnavism"},

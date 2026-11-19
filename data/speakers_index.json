@@ -363,6 +363,93 @@
     ]
   },
   {
+    "name": "Keshav Anand Das",
+    "slug": "keshav-anand-das",
+    "description": "Inspiring Hindi discourses on Bhagavad Gita, Srimad Bhagavatam & Gaudiya philosophy",
+    "total_lectures": 1590,
+    "sources": [
+      "youtube"
+    ],
+    "categories": [
+      {
+        "name": "Bhagavad Gita",
+        "count": 254
+      },
+      {
+        "name": "Bhakti-rasāmṛta-sindhu",
+        "count": 4
+      },
+      {
+        "name": "Caitanya Caritāmṛta",
+        "count": 50
+      },
+      {
+        "name": "Gaudiya Vaishnava Philosophy",
+        "count": 59
+      },
+      {
+        "name": "Krishna Lila & Stutis",
+        "count": 6
+      },
+      {
+        "name": "Kṛṣṇa Karṇāmṛta",
+        "count": 5
+      },
+      {
+        "name": "Priti Sandarbha",
+        "count": 4
+      },
+      {
+        "name": "Sadhana & Spiritual Practice",
+        "count": 52
+      },
+      {
+        "name": "Sri Ramayana & Lord Rama Katha",
+        "count": 15
+      },
+      {
+        "name": "Srila Prabhupada & Acaryas",
+        "count": 69
+      },
+      {
+        "name": "Srimad Bhagavatam",
+        "count": 316
+      },
+      {
+        "name": "Thematic Seminars & Upadesha",
+        "count": 670
+      },
+      {
+        "name": "Upadeśāmṛta (Nectar of Instruction)",
+        "count": 6
+      },
+      {
+        "name": "Vaishnava Festivals & Dhama",
+        "count": 59
+      },
+      {
+        "name": "Vilāpa Kusumāñjali",
+        "count": 1
+      },
+      {
+        "name": "Viṣṇu Sahasranāma",
+        "count": 2
+      },
+      {
+        "name": "Vrindavan Mahimamrita",
+        "count": 6
+      },
+      {
+        "name": "Śikṣāṣṭakam",
+        "count": 2
+      },
+      {
+        "name": "Śrī Īśopaniṣad & Upanisads",
+        "count": 10
+      }
+    ]
+  },
+  {
     "name": "Madhavananda Das",
     "slug": "madhavananda-das",
     "description": "Gopal Jiu Publications, Sri Jagannath & Gour Govinda Swami katha",

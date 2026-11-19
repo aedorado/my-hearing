@@ -6,17 +6,18 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
 
 ## 🌟 Features & Highlights
 
-- **9 Canonical Speakers (Strict Alphabetical Roster)**:
+- **10 Canonical Speakers (Strict Alphabetical Roster)**:
   1. **Amarendra Das** (204 lectures)
   2. **Balaram Shakti Das** (633 lectures)
   3. **Bhurijana Das** (1,882 audio lectures)
   4. **Hari Parshad Das** (675 lectures)
   5. **Indradyumna Swami** (413 lectures)
-  6. **Madhavananda Das** (426 lectures)
-  7. **Radha Govinda Das Goswami** (1,842 audio lectures)
-  8. **Radhika Raman Das** (176 lectures)
-  9. **Sacinandana Swami** (7,011 audio lectures)
-  - **Total Catalog**: **13,262 lectures**
+  6. **Keshav Anand Das** (1,590 lectures)
+  7. **Madhavananda Das** (426 lectures)
+  8. **Radha Govinda Das Goswami** (1,842 audio lectures)
+  9. **Radhika Raman Das** (176 lectures)
+  10. **Sacinandana Swami** (7,011 audio lectures)
+  - **Total Catalog**: **14,852 lectures**
 - **Unified Media Player**:
   - Seamlessly streams both **YouTube videos/audio** and direct **HTML5 MP3 audio** (from ISKCON Desire Tree and Saranagati Library).
   - Floating bottom player with scrub timeline, 10s forward/rewind, speed control (`0.75x` – `2.0x`), and volume slider.
@@ -56,6 +57,8 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
   - *Brhad Bhagavatamrta Vol 1 - Narada Muni's Journey* (`PLOlsz8SWVWGE2cweuW3DodJSQwlFB8ivp`) — 118 lectures
   - *Brhad Bhagavatamrta Vol 2 - Gopa Kumar's Journey* (`PLOlsz8SWVWGHAwBMZObnAyK65eBSGqiLE`) — 238 lectures
   - *Gopal Champu (Purva)* (`PLP3jBUDmoHYI`) — 23 lectures
+- **Keshav Anand Das (1,590 Discourses)**:
+  - *Complete Channel Ingestion* (`@keshvananddas`) — 1,590 videos categorized into Bhagavad Gita chapters (01–18), Srimad Bhagavatam cantos (01–12), Sri Caitanya Caritamrita (Adi, Madhya, Antya), Sandarbhas, Acaryas, and festivals.
 - **Madhavananda Das (11 Playlists)**:
   - *Meeting in Kuruksetra* (`PLDXWEweAZ-pyOynl8llDnUJSEAER8s9bF`) — 119 lectures
   - *Prema-bhakti-candrika* (`PLDXWEweAZ-pzMpUMyZV1eiLEcRZDIyMUT`) — 120 lectures

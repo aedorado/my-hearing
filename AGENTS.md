@@ -6,7 +6,7 @@ Welcome to **My Hearing** — a dedicated personal hearing portal and sadhana ka
 
 ## 1. System Vision & Architectural Invariants
 
-### 1.1 The 9 Canonical Speakers (Strict Alphabetical Roster)
+### 1.1 The 10 Canonical Speakers (Strict Alphabetical Roster)
 All UI elements, dropdowns, selector carousels, and indexes **MUST** preserve this exact alphabetical order:
 
 1. **Amarendra Das** (`amarendra-das`) — Inspiring Bhagavad Gita & Srimad Bhagavatam discourses.
@@ -14,10 +14,11 @@ All UI elements, dropdowns, selector carousels, and indexes **MUST** preserve th
 3. **Bhurijana Das** (`bhurijana-das`) — Classic ISKCON teacher, author, and Bhagavat Subodhini seminars.
 4. **Hari Parshad Das** (`hari-parshad-das`) — Scholarly Vaishnava katha, Upadeshamrita & Caitanya Caritamrta.
 5. **Indradyumna Swami** (`indradyumna-swami`) — Vrindavan Parikrama, Polish Tour, kirtans and nectar discourses.
-6. **Madhavananda Das** (`madhavananda-das`) — Gopal Jiu Publications, Sri Jagannath & Gour Govinda Swami katha.
-7. **Radha Govinda Das Goswami** (`radha-govinda-das-goswami`) — Soul-stirring Srimad Bhagavatam Saptah & Krishna lila katha.
-8. **Radhika Raman Das** (`radhika-raman-das`) — Bhagavata Podcast, Gita insights, and academic Vaishnavism.
-9. **Sacinandana Swami** (`sacinandana-swami`) — Saranagati Library, Holy Name retreats & deep japa meditation.
+6. **Keshav Anand Das** (`keshav-anand-das`) — Inspiring Hindi discourses on Bhagavad Gita, Srimad Bhagavatam & Gaudiya philosophy.
+7. **Madhavananda Das** (`madhavananda-das`) — Gopal Jiu Publications, Sri Jagannath & Gour Govinda Swami katha.
+8. **Radha Govinda Das Goswami** (`radha-govinda-das-goswami`) — Soul-stirring Srimad Bhagavatam Saptah & Krishna lila katha.
+9. **Radhika Raman Das** (`radhika-raman-das`) — Bhagavata Podcast, Gita insights, and academic Vaishnavism.
+10. **Sacinandana Swami** (`sacinandana-swami`) — Saranagati Library, Holy Name retreats & deep japa meditation.
 
 ---
 

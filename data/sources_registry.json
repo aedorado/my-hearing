@@ -639,6 +639,16 @@
       "added_count": 38,
       "total_speaker_count": 426,
       "timestamp": "2026-11-19T11:07:00.453285+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/@keshvananddas/videos",
+      "type": "youtube_channel",
+      "speaker": "Keshav Anand Das",
+      "speaker_slug": "keshav-anand-das",
+      "category": "Entire Channel Archive",
+      "added_count": 1590,
+      "total_speaker_count": 1590,
+      "timestamp": "2026-11-19T17:35:00.000000+00:00"
     }
   ],
   "updated_at": "2026-11-19T11:07:00.453913+00:00"
