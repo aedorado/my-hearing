@@ -1,0 +1,572 @@
+{
+  "sources": [
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGFjkvmyvasvi8c52btP4vPU",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Bhakti Sandarbha",
+      "added_count": 122,
+      "total_speaker_count": 122,
+      "timestamp": "2026-11-19T09:40:49.596289+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGEGMDVh5R8-kUfYE-0oBnKR",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Tattva Sandarbha",
+      "added_count": 87,
+      "total_speaker_count": 209,
+      "timestamp": "2026-11-19T09:40:52.806747+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=EJSG1FAWL1w&list=PLDXWEweAZ-pw3CwF3GUBsoDnzw-Y8YKsC",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Sri Jagannath Katha",
+      "added_count": 31,
+      "total_speaker_count": 31,
+      "timestamp": "2026-11-19T09:40:57.068144+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=YWvO4-Smxso&list=PLDXWEweAZ-pw95aDUgQlF8ccWsiNGKEmq",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Vaisnava Sadachar & Seva",
+      "added_count": 7,
+      "total_speaker_count": 38,
+      "timestamp": "2026-11-19T09:41:00.250874+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=Qv81NI9gbh8&list=PLDXWEweAZ-pzMpUMyZV1eiLEcRZDIyMUT",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Gour Govinda Swami Lila & Teachings",
+      "added_count": 120,
+      "total_speaker_count": 158,
+      "timestamp": "2026-11-19T09:41:04.797720+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=gXIv7mnZLsU&list=PLDXWEweAZ-pxkyu2w3sbFth5-s5RS2WK_",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Vraja Mandala Parikrama & Katha",
+      "added_count": 6,
+      "total_speaker_count": 164,
+      "timestamp": "2026-11-19T09:41:07.814923+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=zy69aHcyrog&list=PLOLQFA19eqhBgw1ZMuwLBL5FQQyRvroWc",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Parikrama & Dham Katha",
+      "added_count": 204,
+      "total_speaker_count": 204,
+      "timestamp": "2026-11-19T09:41:13.146092+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=Smpo_cQ7kLs&list=PLOLQFA19eqhCDyIMvwy36nK7tmytl3DWe",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Vrindavan Parikrama",
+      "added_count": 7,
+      "total_speaker_count": 211,
+      "timestamp": "2026-11-19T09:41:16.089963+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=BAKSmG-vjeY&list=PLOLQFA19eqhCfiPsHp584DLzWzo0zDVMJ",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Kartik Parikrama",
+      "added_count": 9,
+      "total_speaker_count": 220,
+      "timestamp": "2026-11-19T09:41:19.221872+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=ZxWTU5-cutg&list=PLOLQFA19eqhDGa3W65fflCzwFiQ7ImAfo",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Mayapur & Navadvip Parikrama",
+      "added_count": 10,
+      "total_speaker_count": 230,
+      "timestamp": "2026-11-19T09:41:22.821099+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=6QutlP3FVfI&list=PLOLQFA19eqhC040mTKQyiqTssxClF4aW3",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Sadhu Sanga Retreat",
+      "added_count": 3,
+      "total_speaker_count": 233,
+      "timestamp": "2026-11-19T09:41:25.833158+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=BdkMSHzHeEI&list=PLOLQFA19eqhAMuFQTTfla5dhYaL3bCGC2",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Polish Festival of India",
+      "added_count": 10,
+      "total_speaker_count": 243,
+      "timestamp": "2026-11-19T09:41:29.148329+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=w_sFOx9UNOg&list=PLOLQFA19eqhC2yxu9Oi-nAF4ID_UZm9dZ",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Kirtans & Bhajans",
+      "added_count": 6,
+      "total_speaker_count": 249,
+      "timestamp": "2026-11-19T09:41:32.178185+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=z9emQUWsoTU&list=PLOLQFA19eqhDz-OXekrxP7q5hXE_BJRGB",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Bhagavad Gita Classes",
+      "added_count": 8,
+      "total_speaker_count": 257,
+      "timestamp": "2026-11-19T09:41:35.377015+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=Z2-Y1JMT7Xk&list=PLOLQFA19eqhCqhRZErF62u2UYwyP_8mRl",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Srimad Bhagavatam Classes",
+      "added_count": 3,
+      "total_speaker_count": 260,
+      "timestamp": "2026-11-19T09:41:38.472084+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=NPWSqNv0_Rc&list=PLOLQFA19eqhC1485mDr_fhcEpGJaq0iLr",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Caitanya Caritamrta Classes",
+      "added_count": 5,
+      "total_speaker_count": 265,
+      "timestamp": "2026-11-19T09:41:41.993538+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=GTTqpg1Zp5g&list=PLOLQFA19eqhBzwpKJ6Uh6_R_m02KE46x1",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Festival Seminars & Retreats",
+      "added_count": 3,
+      "total_speaker_count": 268,
+      "timestamp": "2026-11-19T09:41:45.375563+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=tsyFvwFPAC4&list=PLOLQFA19eqhBHjWJLR4z6UcV_TKONyOID",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Morning Japa & Meditation",
+      "added_count": 4,
+      "total_speaker_count": 272,
+      "timestamp": "2026-11-19T09:41:48.245999+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=q_jQqvqqsKE&list=PLOLQFA19eqhBxsn_DwMrRLFYDhpXobjOy",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Vyasa Puja & Tributes",
+      "added_count": 8,
+      "total_speaker_count": 280,
+      "timestamp": "2026-11-19T09:41:51.728796+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=RQ2aRijk220&list=PLOLQFA19eqhBtQFPhFIgwNOojDpu0xrf8",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Vedic Wisdom Lectures",
+      "added_count": 12,
+      "total_speaker_count": 292,
+      "timestamp": "2026-11-19T09:41:55.250402+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=7Y7kBHSJfbo&list=PLOLQFA19eqhDXZQgxERjJDkrEz-nfHpjd",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Holy Name Retreat",
+      "added_count": 5,
+      "total_speaker_count": 297,
+      "timestamp": "2026-11-19T09:41:59.559533+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=Ag30VtpOA9g&list=PLOLQFA19eqhDvQoq40EtrJsj0kRKV8onS",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Dham Yatra Series",
+      "added_count": 15,
+      "total_speaker_count": 312,
+      "timestamp": "2026-11-19T09:42:02.811917+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=vyC3Tfb1AUM&list=PLOLQFA19eqhD1HiBBFWWW7uQSnz_HjfOJ",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Devotional Discourses",
+      "added_count": 10,
+      "total_speaker_count": 322,
+      "timestamp": "2026-11-19T09:42:06.652545+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=HhkemW5Mc0U&list=PLOLQFA19eqhAi5jatvMqihUTT1niDBmTs",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Vaisnava Festival Lectures",
+      "added_count": 24,
+      "total_speaker_count": 346,
+      "timestamp": "2026-11-19T09:42:10.393077+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=_41twhensNU&list=PLOLQFA19eqhBBPsv21Led3sxpgFqJa9jd",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Special Seminars",
+      "added_count": 37,
+      "total_speaker_count": 383,
+      "timestamp": "2026-11-19T09:42:14.471239+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=-v0Eq3dx60c&list=PLOLQFA19eqhA-5ZWgMQqTDwSHzH9u7taA",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Kirtan Mela & Yatra Highlights",
+      "added_count": 30,
+      "total_speaker_count": 413,
+      "timestamp": "2026-11-19T09:42:18.043604+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGFjkvmyvasvi8c52btP4vPU",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Bhakti Sandarbha",
+      "added_count": 122,
+      "total_speaker_count": 122,
+      "timestamp": "2026-11-19T10:09:50.066220+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGEGMDVh5R8-kUfYE-0oBnKR",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Tattva Sandarbha",
+      "added_count": 87,
+      "total_speaker_count": 209,
+      "timestamp": "2026-11-19T10:09:52.965168+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pw3CwF3GUBsoDnzw-Y8YKsC",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Embankment of Separation",
+      "added_count": 31,
+      "total_speaker_count": 31,
+      "timestamp": "2026-11-19T10:09:55.293631+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pw95aDUgQlF8ccWsiNGKEmq",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Lives of the Acaryas",
+      "added_count": 7,
+      "total_speaker_count": 38,
+      "timestamp": "2026-11-19T10:09:58.297031+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pzMpUMyZV1eiLEcRZDIyMUT",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "Prema-bhakti-candrika",
+      "added_count": 120,
+      "total_speaker_count": 158,
+      "timestamp": "2026-11-19T10:10:01.748197+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLDXWEweAZ-pxkyu2w3sbFth5-s5RS2WK_",
+      "speaker": "Madhavananda Das",
+      "speaker_slug": "madhavananda-das",
+      "category": "In Search of a True Disciple",
+      "added_count": 6,
+      "total_speaker_count": 164,
+      "timestamp": "2026-11-19T10:10:03.834431+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhBgw1ZMuwLBL5FQQyRvroWc",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Stimulation for Ecstatic Love",
+      "added_count": 204,
+      "total_speaker_count": 204,
+      "timestamp": "2026-11-19T10:10:08.910046+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhCDyIMvwy36nK7tmytl3DWe",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "The Binding Rope of Spotless Love",
+      "added_count": 7,
+      "total_speaker_count": 211,
+      "timestamp": "2026-11-19T10:10:11.107485+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhCfiPsHp584DLzWzo0zDVMJ",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Samadhis of the Acaryas",
+      "added_count": 9,
+      "total_speaker_count": 220,
+      "timestamp": "2026-11-19T10:10:13.272880+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhDGa3W65fflCzwFiQ7ImAfo",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Historical Vrindavan",
+      "added_count": 10,
+      "total_speaker_count": 230,
+      "timestamp": "2026-11-19T10:10:15.513542+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhC040mTKQyiqTssxClF4aW3",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Monsoon Season",
+      "added_count": 3,
+      "total_speaker_count": 233,
+      "timestamp": "2026-11-19T10:10:17.648217+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhAMuFQTTfla5dhYaL3bCGC2",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Lord Caitanya in Vrindavan, Gaya, Jarikhanda, Mayapur",
+      "added_count": 10,
+      "total_speaker_count": 243,
+      "timestamp": "2026-11-19T10:10:19.836279+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhC2yxu9Oi-nAF4ID_UZm9dZ",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Summer Pastimes",
+      "added_count": 6,
+      "total_speaker_count": 249,
+      "timestamp": "2026-11-19T10:10:22.757464+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhDz-OXekrxP7q5hXE_BJRGB",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Spring Pastimes",
+      "added_count": 8,
+      "total_speaker_count": 257,
+      "timestamp": "2026-11-19T10:10:25.510120+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhCqhRZErF62u2UYwyP_8mRl",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Madan Mohan",
+      "added_count": 3,
+      "total_speaker_count": 260,
+      "timestamp": "2026-11-19T10:10:28.638734+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhC1485mDr_fhcEpGJaq0iLr",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Daily Pastimes (asta-kaliya lila)",
+      "added_count": 5,
+      "total_speaker_count": 265,
+      "timestamp": "2026-11-19T10:10:30.758671+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhBzwpKJ6Uh6_R_m02KE46x1",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Winter Pastimes",
+      "added_count": 3,
+      "total_speaker_count": 268,
+      "timestamp": "2026-11-19T10:10:33.549522+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhBHjWJLR4z6UcV_TKONyOID",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "The Rasa Dance",
+      "added_count": 4,
+      "total_speaker_count": 272,
+      "timestamp": "2026-11-19T10:10:36.886732+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhBxsn_DwMrRLFYDhpXobjOy",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Asta Sakhi Pastimes",
+      "added_count": 8,
+      "total_speaker_count": 280,
+      "timestamp": "2026-11-19T10:10:39.067588+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhBtQFPhFIgwNOojDpu0xrf8",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "The Hidden Pastimes of Govindaji",
+      "added_count": 12,
+      "total_speaker_count": 292,
+      "timestamp": "2026-11-19T10:10:43.325770+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhDXZQgxERjJDkrEz-nfHpjd",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Yavat Pastimes",
+      "added_count": 5,
+      "total_speaker_count": 297,
+      "timestamp": "2026-11-19T10:10:45.948444+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhDvQoq40EtrJsj0kRKV8onS",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Just Wander!",
+      "added_count": 15,
+      "total_speaker_count": 312,
+      "timestamp": "2026-11-19T10:10:48.674725+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhD1HiBBFWWW7uQSnz_HjfOJ",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Govardhan Pastimes",
+      "added_count": 10,
+      "total_speaker_count": 322,
+      "timestamp": "2026-11-19T10:10:53.675872+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhAi5jatvMqihUTT1niDBmTs",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Vaisnava Acaryas",
+      "added_count": 24,
+      "total_speaker_count": 346,
+      "timestamp": "2026-11-19T10:10:55.901600+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhBBPsv21Led3sxpgFqJa9jd",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Sub-Forests of Vrindavan",
+      "added_count": 37,
+      "total_speaker_count": 383,
+      "timestamp": "2026-11-19T10:10:59.010907+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOLQFA19eqhA-5ZWgMQqTDwSHzH9u7taA",
+      "speaker": "Indradyumna Swami",
+      "speaker_slug": "indradyumna-swami",
+      "category": "Twelve Forests of Vrindavan",
+      "added_count": 30,
+      "total_speaker_count": 413,
+      "timestamp": "2026-11-19T10:11:01.299774+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLIcxMV4k2-aU",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Kārtika Hindi Kathā 2026 - दामोदर लीला",
+      "added_count": 25,
+      "total_speaker_count": 25,
+      "timestamp": "2026-11-19T10:32:53.530722+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLaHRUVhq1CVU",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Kārtika English Kathā 2026 - Caitanya Mahāprabhu instructs Sanātana Gosvāmī",
+      "added_count": 28,
+      "total_speaker_count": 53,
+      "timestamp": "2026-11-19T10:32:57.515229+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLJSHQ35mhErtj61T9vRcj9UROVpneyl97",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Venu Gīta | Kartik Kathā 2025",
+      "added_count": 33,
+      "total_speaker_count": 86,
+      "timestamp": "2026-11-19T10:33:00.066063+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLJSHQ35mhErtYaP_0KygXhprBHZhYIKm3",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Childhood Pastimes of Kṛṣṇa | Kartik Kathā 2025",
+      "added_count": 34,
+      "total_speaker_count": 120,
+      "timestamp": "2026-11-19T10:33:03.230272+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLJSHQ35mhErtLnbKhUq65rIxpM374qDgz",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Kārtika Kathā 2024 (ISKCON Atlanta)",
+      "added_count": 30,
+      "total_speaker_count": 150,
+      "timestamp": "2026-11-19T10:33:09.522671+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLJSHQ35mhEruCEVyiEjQJVZpAij7xAU_u",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Śrīmad Bhāgavatam Canto 7",
+      "added_count": 54,
+      "total_speaker_count": 204,
+      "timestamp": "2026-11-19T10:33:48.460123+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGGPpulciDjFhAqMDG1Cn2ix",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Tattva Sandarbha",
+      "added_count": 34,
+      "total_speaker_count": 243,
+      "timestamp": "2026-11-19T10:36:30.864687+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGHQx2O4b_DC2wdSSsR03q-G",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Raga Vartma Chandrika",
+      "added_count": 11,
+      "total_speaker_count": 254,
+      "timestamp": "2026-11-19T10:36:33.581442+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGE2cweuW3DodJSQwlFB8ivp",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Brhad Bhagavatamrta Vol 1 - Narada Muni's Journey",
+      "added_count": 118,
+      "total_speaker_count": 372,
+      "timestamp": "2026-11-19T10:39:23.357501+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLOlsz8SWVWGHAwBMZObnAyK65eBSGqiLE",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Brhad Bhagavatamrta Vol 2 - Gopa Kumar's Journey",
+      "added_count": 238,
+      "total_speaker_count": 610,
+      "timestamp": "2026-11-19T10:39:28.976025+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLP3jBUDmoHYI",
+      "speaker": "Balaram Shakti Das",
+      "speaker_slug": "balaram-shakti-das",
+      "category": "Gopal Champu (Purva)",
+      "added_count": 23,
+      "total_speaker_count": 633,
+      "timestamp": "2026-11-19T10:40:09.831687+00:00"
+    }
+  ],
+  "updated_at": "2026-11-19T10:40:09.832369+00:00"
+}
