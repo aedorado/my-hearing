@@ -1396,8 +1396,9 @@
     "name": "Radhika Raman Das",
     "slug": "radhika-raman-das",
     "description": "Bhagavata Podcast, Gita insights, and academic Vaishnavism",
-    "total_lectures": 112,
+    "total_lectures": 176,
     "sources": [
+      "audio",
       "youtube"
     ],
     "categories": [
@@ -1411,7 +1412,11 @@
       },
       {
         "name": "Bhagavad Gita",
-        "count": 6
+        "count": 24
+      },
+      {
+        "name": "Caitanya Caritāmṛta",
+        "count": 1
       },
       {
         "name": "Churning the Ocean of Shastra",
@@ -1420,6 +1425,10 @@
       {
         "name": "Engaged Vaishnavism & Ecology",
         "count": 6
+      },
+      {
+        "name": "Essence of All Advice",
+        "count": 4
       },
       {
         "name": "Forgiveness",
@@ -1454,6 +1463,10 @@
         "count": 5
       },
       {
+        "name": "Sanskrit for Scriptural Study",
+        "count": 2
+      },
+      {
         "name": "Sanskrit Study",
         "count": 3
       },
@@ -1467,7 +1480,7 @@
       },
       {
         "name": "Srimad Bhagavatam",
-        "count": 8
+        "count": 28
       },
       {
         "name": "Sunday Programs & Practices",
@@ -1480,6 +1493,14 @@
       {
         "name": "The Bhagavata Podcast",
         "count": 6
+      },
+      {
+        "name": "Upadeśāmṛta (Nectar of Instruction)",
+        "count": 4
+      },
+      {
+        "name": "Various Discourses",
+        "count": 15
       }
     ]
   },

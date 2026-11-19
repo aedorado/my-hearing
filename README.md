@@ -14,9 +14,9 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
   5. **Indradyumna Swami** (413 lectures)
   6. **Madhavananda Das** (164 lectures)
   7. **Radha Govinda Das Goswami** (1,842 audio lectures)
-  8. **Radhika Raman Das** (112 lectures)
+  8. **Radhika Raman Das** (176 lectures)
   9. **Sacinandana Swami** (7,011 audio lectures)
-  - **Total Catalog**: **12,936+ lectures**
+  - **Total Catalog**: **13,000 lectures**
 - **Unified Media Player**:
   - Seamlessly streams both **YouTube videos/audio** and direct **HTML5 MP3 audio** (from ISKCON Desire Tree and Saranagati Library).
   - Floating bottom player with scrub timeline, 10s forward/rewind, speed control (`0.75x` – `2.0x`), and volume slider.
@@ -92,7 +92,7 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
 
 ### 3. Curated Archives Onboarded
 - **HG Hari Parshad Das**: 675 lectures imported from `../hpd-talks/data/combined_hpd_lectures.csv`.
-- **HG Radhika Raman Das**: 112 lectures imported from `talks - RRD.csv`.
+- **HG Radhika Raman Das**: 176 lectures (112 curated discourses from `talks - RRD.csv` + 64 audio lectures crawled and deduplicated from ISKCON Desire Tree).
 
 ---
 
