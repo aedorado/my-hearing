@@ -47,14 +47,19 @@ export function UnifiedPlayer({
   const [showVideoDrawer, setShowVideoDrawer] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const ytPlayerRef = useRef<any>(null);
+  const ytIframeRef = useRef<HTMLIFrameElement | null>(null);
+
   const isAudio = currentLecture?.source_type === "audio";
+  const ytId =
+    currentLecture && !isAudio
+      ? currentLecture.yt_id || (currentLecture.id.startsWith("yt:") ? currentLecture.id.replace("yt:", "") : "")
+      : "";
 
   // Reset timestamps when lecture changes
   useEffect(() => {
     setCurrentTime(initialTime);
     setDuration(0);
-  }, [currentLecture?.id]);
+  }, [currentLecture?.id, initialTime]);
 
   // Audio HTML5 setup
   useEffect(() => {
@@ -70,9 +75,23 @@ export function UnifiedPlayer({
     } else {
       audio.pause();
     }
-  }, [currentLecture?.id, isAudio]);
+  }, [currentLecture?.id, isAudio, initialTime]);
 
-  // Sync play/pause state for audio
+  // Helper to send commands to YouTube iframe via postMessage
+  const sendYtCommand = (func: string, args: any[] = []) => {
+    if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
+      ytIframeRef.current.contentWindow.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: func,
+          args: args,
+        }),
+        "*"
+      );
+    }
+  };
+
+  // Sync play/pause state for both audio and YouTube
   useEffect(() => {
     if (isAudio && audioRef.current) {
       if (isPlaying) {
@@ -80,22 +99,68 @@ export function UnifiedPlayer({
       } else {
         audioRef.current.pause();
       }
+    } else if (!isAudio && ytId) {
+      if (isPlaying) {
+        sendYtCommand("playVideo");
+      } else {
+        sendYtCommand("pauseVideo");
+      }
     }
-  }, [isPlaying, isAudio]);
+  }, [isPlaying, isAudio, ytId]);
 
   // Sync playbackRate
   useEffect(() => {
     if (isAudio && audioRef.current) {
       audioRef.current.playbackRate = playbackRate;
+    } else if (!isAudio && ytId) {
+      sendYtCommand("setPlaybackRate", [playbackRate]);
     }
-  }, [playbackRate, isAudio]);
+  }, [playbackRate, isAudio, ytId]);
 
-  // Sync volume
+  // Sync volume and mute
   useEffect(() => {
     if (isAudio && audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
+    } else if (!isAudio && ytId) {
+      if (isMuted) {
+        sendYtCommand("mute");
+      } else {
+        sendYtCommand("unMute");
+        sendYtCommand("setVolume", [Math.round(volume * 100)]);
+      }
     }
-  }, [volume, isMuted, isAudio]);
+  }, [volume, isMuted, isAudio, ytId]);
+
+  // Listen for YouTube iframe events (time update, duration, completion)
+  useEffect(() => {
+    if (isAudio) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      if (typeof event.data !== "string") return;
+      try {
+        const data = JSON.parse(event.data);
+        if (data.event === "infoDelivery" && data.info) {
+          if (typeof data.info.currentTime === "number") {
+            setCurrentTime(data.info.currentTime);
+            if (onSaveProgress && currentLecture) {
+              onSaveProgress(currentLecture.id, data.info.currentTime, data.info.duration || duration);
+            }
+          }
+          if (typeof data.info.duration === "number" && data.info.duration > 0) {
+            setDuration(data.info.duration);
+          }
+          if (data.info.playerState === 0 && currentLecture) {
+            onToggleHeard(currentLecture.id);
+          }
+        }
+      } catch {
+        // Ignore non-json messages
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [isAudio, currentLecture?.id, duration, onSaveProgress, onToggleHeard]);
 
   if (!currentLecture) return null;
 
@@ -116,12 +181,18 @@ export function UnifiedPlayer({
     setCurrentTime(val);
     if (isAudio && audioRef.current) {
       audioRef.current.currentTime = val;
+    } else if (!isAudio && ytId) {
+      sendYtCommand("seekTo", [val, true]);
     }
   };
 
   const skipTime = (seconds: number) => {
     if (isAudio && audioRef.current) {
       audioRef.current.currentTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + seconds));
+    } else if (!isAudio && ytId) {
+      const newTime = Math.max(0, currentTime + seconds);
+      setCurrentTime(newTime);
+      sendYtCommand("seekTo", [newTime, true]);
     }
   };
 
@@ -138,12 +209,36 @@ export function UnifiedPlayer({
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 transition-all duration-300">
-      {/* Expandable YouTube Video Drawer */}
-      {!isAudio && showVideoDrawer && (
-        <div className="max-w-4xl mx-auto bg-black rounded-t-2xl overflow-hidden shadow-2xl border-t border-x border-amber-500/30">
-          <div className="relative aspect-video w-full bg-black">
+      {/* YouTube Player - Always mounted in DOM for immediate audio playback */}
+      {!isAudio && ytId && (
+        <div
+          className={`transition-all duration-300 ${
+            showVideoDrawer
+              ? "block max-w-4xl mx-auto bg-black rounded-t-2xl overflow-hidden shadow-2xl border-t border-x border-amber-500/30 opacity-100 pointer-events-auto"
+              : "fixed bottom-[80px] right-4 w-[320px] h-[180px] opacity-0 pointer-events-none -z-50"
+          }`}
+        >
+          {showVideoDrawer && (
+            <div className="bg-stone-900 px-4 py-2 border-b border-white/10 flex items-center justify-between text-xs text-stone-300">
+              <span className="flex items-center gap-1.5 font-medium text-amber-400">
+                <Video className="w-3.5 h-3.5" /> Video Mode
+              </span>
+              <button
+                onClick={() => setShowVideoDrawer(false)}
+                className="hover:text-white transition-colors flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-200"
+              >
+                <span>Switch to Audio Only</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+          <div key="yt-iframe-container" className="relative aspect-video w-full bg-black">
             <iframe
-              src={`https://www.youtube.com/embed/${currentLecture.yt_id}?autoplay=1&enablejsapi=1`}
+              ref={ytIframeRef}
+              key={ytId}
+              src={`https://www.youtube.com/embed/${ytId}?enablejsapi=1&autoplay=1${
+                initialTime > 0 ? `&start=${Math.floor(initialTime)}` : ""
+              }&origin=${typeof window !== "undefined" ? encodeURIComponent(window.location.origin) : ""}`}
               className="w-full h-full border-0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -152,7 +247,7 @@ export function UnifiedPlayer({
         </div>
       )}
 
-      {/* Hidden Native Audio Element */}
+      {/* Hidden Native Audio Element for MP3 Sources */}
       {isAudio && (
         <audio
           ref={audioRef}
@@ -240,7 +335,7 @@ export function UnifiedPlayer({
             </div>
 
             {/* Scrubber & Timestamps */}
-            {isAudio && duration > 0 && (
+            {duration > 0 ? (
               <div className="flex items-center gap-2 w-full max-w-sm text-[11px] text-[var(--muted)] font-mono">
                 <span>{formatTime(currentTime)}</span>
                 <input
@@ -252,6 +347,11 @@ export function UnifiedPlayer({
                   className="w-full h-1 bg-[var(--card-border)] rounded-lg appearance-none cursor-pointer accent-amber-500"
                 />
                 <span>{formatTime(duration)}</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 text-[11px] text-[var(--muted)]">
+                <span className="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                <span>{!isAudio ? "YouTube Audio Stream" : "Connecting audio..."}</span>
               </div>
             )}
           </div>
@@ -276,9 +376,16 @@ export function UnifiedPlayer({
             {!isAudio && (
               <button
                 onClick={() => setShowVideoDrawer(!showVideoDrawer)}
-                className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-lg border border-[var(--card-border)] bg-[var(--surface-hover)] hover:border-amber-500 text-[var(--foreground)] transition-all"
+                className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-xl font-medium border transition-all ${
+                  showVideoDrawer
+                    ? "bg-amber-500 text-white border-amber-600 shadow-sm"
+                    : "bg-[var(--surface-hover)] border-[var(--card-border)] text-[var(--foreground)] hover:border-amber-500/50"
+                }`}
+                title={showVideoDrawer ? "Switch to Audio-Only Mode" : "Show Video"}
               >
-                <span>Video</span>
+                <Video className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{showVideoDrawer ? "Hide Video" : "Show Video"}</span>
+                <span className="sm:hidden">Video</span>
                 {showVideoDrawer ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
               </button>
             )}

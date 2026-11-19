@@ -226,6 +226,14 @@ export function CatalogueClient({
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        {/* Alphabetical Speaker Roster */}
+        <SpeakerSelector
+          speakers={initialSpeakers}
+          selectedSlug={selectedSpeakerSlug}
+          onSelect={(slug) => setSelectedSpeakerSlug(slug)}
+          speakerHeardStats={speakerHeardStats}
+        />
+
         {/* Continue Hearing Hero Banner (if last played exists) */}
         {lastPlayedLecture && (
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-600/15 via-amber-500/10 to-transparent p-5 border border-amber-500/30 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -266,14 +274,6 @@ export function CatalogueClient({
             </button>
           </div>
         )}
-
-        {/* Alphabetical Speaker Roster */}
-        <SpeakerSelector
-          speakers={initialSpeakers}
-          selectedSlug={selectedSpeakerSlug}
-          onSelect={(slug) => setSelectedSpeakerSlug(slug)}
-          speakerHeardStats={speakerHeardStats}
-        />
 
         {/* Search, Filter Pills, Category & Subcategory Dropdowns */}
         <SearchAndFilters
