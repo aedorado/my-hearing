@@ -16,6 +16,7 @@ import {
   ChevronDown,
   Video,
   Music2,
+  Loader2,
 } from "lucide-react";
 
 interface UnifiedPlayerProps {
@@ -45,9 +46,13 @@ export function UnifiedPlayer({
   const [isMuted, setIsMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [showVideoDrawer, setShowVideoDrawer] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ytIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const currentMediaUrlRef = useRef<string | null>(null);
+  const initialSeekDoneRef = useRef(false);
+  const lastSavedTimeRef = useRef<number>(0);
 
   const isAudio = currentLecture?.source_type === "audio";
   const ytId =
@@ -59,23 +64,43 @@ export function UnifiedPlayer({
   useEffect(() => {
     setCurrentTime(initialTime);
     setDuration(0);
-  }, [currentLecture?.id, initialTime]);
+    initialSeekDoneRef.current = false;
+    setIsBuffering(false);
+  }, [currentLecture?.id]);
 
-  // Audio HTML5 setup
+  // Audio HTML5 setup - Only re-run when media URL changes to prevent stream interruptions!
   useEffect(() => {
     if (!isAudio || !audioRef.current || !currentLecture) return;
     const audio = audioRef.current;
-    audio.src = currentLecture.media_url;
-    audio.playbackRate = playbackRate;
-    if (initialTime > 0) {
-      audio.currentTime = initialTime;
+
+    if (currentMediaUrlRef.current !== currentLecture.media_url) {
+      currentMediaUrlRef.current = currentLecture.media_url;
+      initialSeekDoneRef.current = false;
+      setIsBuffering(true);
+      audio.src = currentLecture.media_url;
+      audio.load();
+      audio.playbackRate = playbackRate;
     }
-    if (isPlaying) {
-      audio.play().catch(() => {});
-    } else {
-      audio.pause();
+  }, [currentLecture?.media_url, isAudio]);
+
+  // Handle audio metadata & canplay to apply initialTime once without resetting the stream
+  const handleLoadedMetadata = () => {
+    if (!audioRef.current) return;
+    const dur = audioRef.current.duration || 0;
+    if (dur > 0) setDuration(dur);
+    if (!initialSeekDoneRef.current && initialTime > 0 && dur > 0) {
+      audioRef.current.currentTime = Math.min(initialTime, dur);
+      initialSeekDoneRef.current = true;
     }
-  }, [currentLecture?.id, isAudio, initialTime]);
+  };
+
+  const handleCanPlay = () => {
+    setIsBuffering(false);
+    if (!initialSeekDoneRef.current && initialTime > 0 && audioRef.current && audioRef.current.duration > 0) {
+      audioRef.current.currentTime = Math.min(initialTime, audioRef.current.duration);
+      initialSeekDoneRef.current = true;
+    }
+  };
 
   // Helper to send commands to YouTube iframe via postMessage
   const sendYtCommand = (func: string, args: any[] = []) => {
@@ -91,19 +116,40 @@ export function UnifiedPlayer({
     }
   };
 
+  // Immediate progress flush on pause or close
+  const flushProgress = () => {
+    if (onSaveProgress && currentLecture) {
+      const cur = isAudio ? (audioRef.current?.currentTime || currentTime) : currentTime;
+      const dur = isAudio ? (audioRef.current?.duration || duration) : duration;
+      if (cur > 0) {
+        onSaveProgress(currentLecture.id, cur, dur);
+        lastSavedTimeRef.current = Date.now();
+      }
+    }
+  };
+
+  const handleClose = () => {
+    flushProgress();
+    onClose();
+  };
+
   // Sync play/pause state for both audio and YouTube
   useEffect(() => {
     if (isAudio && audioRef.current) {
       if (isPlaying) {
-        audioRef.current.play().catch(() => {});
+        audioRef.current.play().catch((err) => {
+          console.warn("Audio playback interrupted or awaiting gesture:", err);
+        });
       } else {
         audioRef.current.pause();
+        flushProgress();
       }
     } else if (!isAudio && ytId) {
       if (isPlaying) {
         sendYtCommand("playVideo");
       } else {
         sendYtCommand("pauseVideo");
+        flushProgress();
       }
     }
   }, [isPlaying, isAudio, ytId]);
@@ -141,15 +187,25 @@ export function UnifiedPlayer({
         const data = JSON.parse(event.data);
         if (data.event === "infoDelivery" && data.info) {
           if (typeof data.info.currentTime === "number") {
-            setCurrentTime(data.info.currentTime);
-            if (onSaveProgress && currentLecture) {
-              onSaveProgress(currentLecture.id, data.info.currentTime, data.info.duration || duration);
+            const cur = data.info.currentTime;
+            const dur = data.info.duration || duration;
+            setCurrentTime(cur);
+            if (typeof dur === "number" && dur > 0) {
+              setDuration(dur);
+            }
+            const now = Date.now();
+            if (now - lastSavedTimeRef.current > 5000) {
+              lastSavedTimeRef.current = now;
+              if (onSaveProgress && currentLecture) {
+                onSaveProgress(currentLecture.id, cur, dur);
+              }
             }
           }
           if (typeof data.info.duration === "number" && data.info.duration > 0) {
             setDuration(data.info.duration);
           }
           if (data.info.playerState === 0 && currentLecture) {
+            flushProgress();
             onToggleHeard(currentLecture.id);
           }
         }
@@ -165,13 +221,22 @@ export function UnifiedPlayer({
   if (!currentLecture) return null;
 
   const handleTimeUpdate = () => {
-    if (audioRef.current) {
+    if (audioRef.current && currentLecture) {
       const cur = audioRef.current.currentTime;
       const dur = audioRef.current.duration || 0;
       setCurrentTime(cur);
-      setDuration(dur);
-      if (onSaveProgress && currentLecture) {
-        onSaveProgress(currentLecture.id, cur, dur);
+      if (dur > 0) {
+        setDuration(dur);
+      }
+      setIsBuffering(false);
+
+      // Throttle progress save to avoid re-rendering loops
+      const now = Date.now();
+      if (now - lastSavedTimeRef.current > 5000) {
+        lastSavedTimeRef.current = now;
+        if (onSaveProgress) {
+          onSaveProgress(currentLecture.id, cur, dur);
+        }
       }
     }
   };
@@ -184,16 +249,20 @@ export function UnifiedPlayer({
     } else if (!isAudio && ytId) {
       sendYtCommand("seekTo", [val, true]);
     }
+    lastSavedTimeRef.current = 0;
   };
 
   const skipTime = (seconds: number) => {
     if (isAudio && audioRef.current) {
-      audioRef.current.currentTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + seconds));
+      const newTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + seconds));
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     } else if (!isAudio && ytId) {
       const newTime = Math.max(0, currentTime + seconds);
       setCurrentTime(newTime);
       sendYtCommand("seekTo", [newTime, true]);
     }
+    lastSavedTimeRef.current = 0;
   };
 
   const formatTime = (seconds: number) => {
@@ -251,9 +320,20 @@ export function UnifiedPlayer({
       {isAudio && (
         <audio
           ref={audioRef}
+          preload="auto"
+          playsInline
           onTimeUpdate={handleTimeUpdate}
-          onLoadedMetadata={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          onCanPlay={handleCanPlay}
+          onPlaying={() => setIsBuffering(false)}
+          onWaiting={() => setIsBuffering(true)}
+          onStalled={() => setIsBuffering(true)}
+          onError={() => {
+            setIsBuffering(false);
+            console.error("Audio streaming error on URL:", currentLecture.media_url);
+          }}
           onEnded={() => {
+            flushProgress();
             if (currentLecture) onToggleHeard(currentLecture.id);
           }}
         />
@@ -321,7 +401,13 @@ export function UnifiedPlayer({
                 onClick={onTogglePlay}
                 className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center shadow-md shadow-amber-500/30 transition-transform active:scale-95"
               >
-                {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
+                {isPlaying && isBuffering ? (
+                  <Loader2 className="w-5 h-5 animate-spin text-white" />
+                ) : isPlaying ? (
+                  <Pause className="w-5 h-5 fill-current" />
+                ) : (
+                  <Play className="w-5 h-5 fill-current ml-0.5" />
+                )}
               </button>
 
               {/* Forward 10s */}
@@ -347,11 +433,22 @@ export function UnifiedPlayer({
                   className="w-full h-1 bg-[var(--card-border)] rounded-lg appearance-none cursor-pointer accent-amber-500"
                 />
                 <span>{formatTime(duration)}</span>
+                {isBuffering && (
+                  <span className="text-[10px] text-amber-500 font-sans font-medium flex items-center gap-1 shrink-0">
+                    <Loader2 className="w-2.5 h-2.5 animate-spin" /> Buffering
+                  </span>
+                )}
               </div>
             ) : (
               <div className="flex items-center gap-1.5 text-[11px] text-[var(--muted)]">
                 <span className="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                <span>{!isAudio ? "YouTube Audio Stream" : "Connecting audio..."}</span>
+                <span>
+                  {isBuffering
+                    ? "Buffering audio stream..."
+                    : !isAudio
+                    ? "YouTube Audio Stream"
+                    : "Connecting audio..."}
+                </span>
               </div>
             )}
           </div>
@@ -403,7 +500,7 @@ export function UnifiedPlayer({
 
             {/* Close */}
             <button
-              onClick={onClose}
+              onClick={handleClose}
               title="Close player"
               className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all"
             >

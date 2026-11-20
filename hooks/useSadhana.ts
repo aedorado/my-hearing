@@ -89,6 +89,14 @@ export function useSadhana() {
   // Save Timestamp Progress
   const saveProgress = useCallback((id: string, currentTime: number, duration: number) => {
     setProgressMap((prev) => {
+      const prevEntry = prev[id];
+      if (
+        prevEntry &&
+        Math.abs(prevEntry.currentTime - currentTime) < 1.5 &&
+        Math.abs(prevEntry.duration - duration) < 0.5
+      ) {
+        return prev;
+      }
       const next = {
         ...prev,
         [id]: { currentTime, duration, updatedAt: new Date().toISOString() },

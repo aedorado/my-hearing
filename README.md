@@ -7,7 +7,7 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
 ## 🌟 Features & Highlights
 
 - **10 Canonical Speakers (Strict Alphabetical Roster)**:
-  1. **Amarendra Das** (204 lectures)
+  1. **Amarendra Das** (206 lectures)
   2. **Balaram Shakti Das** (633 lectures)
   3. **Bhurijana Das** (1,882 audio lectures)
   4. **Hari Parshad Das** (675 lectures)
@@ -17,7 +17,7 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
   8. **Radha Govinda Das Goswami** (1,842 audio lectures)
   9. **Radhika Raman Das** (176 lectures)
   10. **Sacinandana Swami** (7,011 audio lectures)
-  - **Total Catalog**: **14,852 lectures**
+  - **Total Catalog**: **14,854 lectures**
 - **Unified Media Player**:
   - Seamlessly streams both **YouTube videos/audio** and direct **HTML5 MP3 audio** (from ISKCON Desire Tree and Saranagati Library).
   - Floating bottom player with scrub timeline, 10s forward/rewind, speed control (`0.75x` – `2.0x`), and volume slider.
@@ -43,8 +43,8 @@ A fast, elegant, distraction-free personal hearing catalogue and sadhana trackin
 
 ### 1. YouTube Playlists Onboarded
 - **Amarendra Das (6 Playlists)**:
-  - *Kārtika Hindi Kathā 2026 - दामोदर लीला* (`PLIcxMV4k2-aU`) — 25 lectures
-  - *Kārtika English Kathā 2026 - Caitanya Mahāprabhu instructs Sanātana Gosvāmī* (`PLaHRUVhq1CVU`) — 28 lectures
+  - *Kārtika Hindi Kathā 2026 - दामोदर लीला* (`PLIcxMV4k2-aU`) — 26 lectures
+  - *Kārtika English Kathā 2026 - Caitanya Mahāprabhu instructs Sanātana Gosvāmī* (`PLaHRUVhq1CVU`) — 29 lectures
   - *Venu Gīta | Kartik Kathā 2025* (`PLJSHQ35mhErtj61T9vRcj9UROVpneyl97`) — 33 lectures
   - *Childhood Pastimes of Kṛṣṇa | Kartik Kathā 2025* (`PLJSHQ35mhErtYaP_0KygXhprBHZhYIKm3`) — 34 lectures
   - *Śrīmad Bhāgavatam Canto 7* (`PLJSHQ35mhEruCEVyiEjQJVZpAij7xAU_u`) — 54 lectures

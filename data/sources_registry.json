@@ -649,7 +649,25 @@
       "added_count": 1590,
       "total_speaker_count": 1590,
       "timestamp": "2026-11-19T17:35:00.000000+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLaHRUVhq1CVU",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Kārtika English Kathā 2026 - Caitanya Mahāprabhu instructs Sanātana Gosvāmī",
+      "added_count": 1,
+      "total_speaker_count": 205,
+      "timestamp": "2026-11-20T08:39:32.117759+00:00"
+    },
+    {
+      "url": "https://www.youtube.com/playlist?list=PLIcxMV4k2-aU",
+      "speaker": "Amarendra Das",
+      "speaker_slug": "amarendra-das",
+      "category": "Kārtika Hindi Kathā 2026 - दामोदर लीला",
+      "added_count": 1,
+      "total_speaker_count": 206,
+      "timestamp": "2026-11-20T08:40:01.469062+00:00"
     }
   ],
-  "updated_at": "2026-11-19T11:07:00.453913+00:00"
+  "updated_at": "2026-11-20T08:40:01.469501+00:00"
 }
