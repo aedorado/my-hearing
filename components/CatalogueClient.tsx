@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Speaker, Lecture } from "@/types";
+import { Speaker, Lecture, SortOption } from "@/types";
 import { Navbar } from "./Navbar";
 import { SpeakerSelector } from "./SpeakerSelector";
 import { SearchAndFilters } from "./SearchAndFilters";
@@ -52,6 +52,7 @@ export function CatalogueClient({
   const [sourceFilter, setSourceFilter] = useState<"all" | "youtube" | "audio">("all");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [sortOption, setSortOption] = useState<SortOption>("default");
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
 
   const [currentLecture, setCurrentLecture] = useState<Lecture | null>(null);
@@ -186,8 +187,41 @@ export function CatalogueClient({
       result = result.filter((l) => l.subcategory === selectedSubcategory);
     }
 
+    // Sort order
+    if (sortOption !== "default") {
+      result = [...result].sort((a, b) => {
+        if (sortOption === "date-desc") {
+          const dateA = a.upload_date || a.category || "";
+          const dateB = b.upload_date || b.category || "";
+          return dateB.localeCompare(dateA);
+        }
+        if (sortOption === "date-asc") {
+          const dateA = a.upload_date || a.category || "";
+          const dateB = b.upload_date || b.category || "";
+          return dateA.localeCompare(dateB);
+        }
+        if (sortOption === "title-asc") {
+          return a.title.localeCompare(b.title);
+        }
+        if (sortOption === "title-desc") {
+          return b.title.localeCompare(a.title);
+        }
+        if (sortOption === "duration-desc") {
+          const durA = a.duration ? a.duration.split(":").reduce((acc, time) => 60 * acc + +time, 0) : 0;
+          const durB = b.duration ? b.duration.split(":").reduce((acc, time) => 60 * acc + +time, 0) : 0;
+          return durB - durA;
+        }
+        if (sortOption === "duration-asc") {
+          const durA = a.duration ? a.duration.split(":").reduce((acc, time) => 60 * acc + +time, 0) : 0;
+          const durB = b.duration ? b.duration.split(":").reduce((acc, time) => 60 * acc + +time, 0) : 0;
+          return durA - durB;
+        }
+        return 0;
+      });
+    }
+
     return result;
-  }, [lectures, searchQuery, statusFilter, sourceFilter, selectedCategory, selectedSubcategory, heardIds, starredIds]);
+  }, [lectures, searchQuery, statusFilter, sourceFilter, selectedCategory, selectedSubcategory, sortOption, heardIds, starredIds]);
 
   // Find last played lecture for hero resume card
   const lastPlayedLecture = useMemo(() => {
@@ -302,6 +336,8 @@ export function CatalogueClient({
           subcategories={activeSubcategories}
           isSNS={selectedSpeakerSlug === "sacinandana-swami"}
           totalFiltered={filteredLectures.length}
+          sortOption={sortOption}
+          onSortChange={setSortOption}
         />
 
         {/* Lectures Grid with Loading and Empty States */}
@@ -323,6 +359,8 @@ export function CatalogueClient({
                 setStatusFilter("all");
                 setSourceFilter("all");
                 setSelectedCategory("");
+                setSelectedSubcategory("");
+                setSortOption("default");
               }}
               className="mt-4 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-amber-500 text-white hover:bg-amber-600 transition-all"
             >

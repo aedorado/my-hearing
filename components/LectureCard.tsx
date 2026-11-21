@@ -27,6 +27,33 @@ interface LectureCardProps {
   onSelectCategory?: (category: string) => void;
 }
 
+function formatDisplayDate(dateStr?: string): string {
+  if (!dateStr) return "";
+  let clean = dateStr;
+  if (/^\d{8}$/.test(dateStr)) {
+    clean = `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
+  }
+  const parts = clean.split("-");
+  if (parts.length === 3) {
+    const year = parts[0];
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    if (month >= 0 && month < 12 && !isNaN(day)) {
+      return `${months[month]} ${day}, ${year}`;
+    }
+  }
+  if (parts.length === 2) {
+    const year = parts[0];
+    const month = parseInt(parts[1], 10) - 1;
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    if (month >= 0 && month < 12) {
+      return `${months[month]} ${year}`;
+    }
+  }
+  return dateStr;
+}
+
 export function LectureCard({
   lecture,
   isPlaying,
@@ -244,15 +271,22 @@ export function LectureCard({
           )}
         </button>
 
-        <a
-          href={lecture.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Open original source"
-          className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all"
-        >
-          <ExternalLink className="w-3.5 h-3.5" />
-        </a>
+        <div className="flex items-center gap-2">
+          {lecture.upload_date && (
+            <span className="text-[11px] text-[var(--muted)] font-medium">
+              {formatDisplayDate(lecture.upload_date)}
+            </span>
+          )}
+          <a
+            href={lecture.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open original source"
+            className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
       </div>
     </div>
   );

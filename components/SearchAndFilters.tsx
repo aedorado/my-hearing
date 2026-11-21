@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Search, X, CheckCircle2, Star, Video, Music2, Layers, Folder, Calendar } from "lucide-react";
-import { SpeakerCategory } from "@/types";
+import { Search, X, CheckCircle2, Star, Video, Music2, Layers, Folder, Calendar, ArrowUpDown } from "lucide-react";
+import { SpeakerCategory, SortOption } from "@/types";
 
 interface SearchAndFiltersProps {
   searchQuery: string;
@@ -19,6 +19,8 @@ interface SearchAndFiltersProps {
   subcategories: SpeakerCategory[];
   isSNS: boolean;
   totalFiltered: number;
+  sortOption: SortOption;
+  onSortChange: (sort: SortOption) => void;
 }
 
 export function SearchAndFilters({
@@ -36,6 +38,8 @@ export function SearchAndFilters({
   subcategories,
   isSNS,
   totalFiltered,
+  sortOption,
+  onSortChange,
 }: SearchAndFiltersProps) {
   return (
     <div className="space-y-3 bg-[var(--surface)] p-4 rounded-2xl border border-[var(--card-border)] shadow-sm">
@@ -150,12 +154,12 @@ export function SearchAndFilters({
         </div>
       </div>
 
-      {/* Row 2: Category & Subcategory Dropdowns */}
-      {(categories.length > 0 || subcategories.length > 0) && (
-        <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-[var(--card-border)]/60">
+      {/* Row 2: Category, Subcategory & Sort Dropdowns */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[var(--card-border)]/60">
+        <div className="flex flex-wrap items-center gap-3 flex-1 min-w-0">
           {/* Category / Series / Year Dropdown */}
           {categories.length > 0 && (
-            <div className="flex items-center gap-2 flex-1 min-w-[220px] sm:max-w-xs">
+            <div className="flex items-center gap-2 flex-1 min-w-[200px] sm:max-w-xs">
               <span className="text-xs font-semibold text-[var(--muted)] flex items-center gap-1 shrink-0">
                 {isSNS ? <Calendar className="w-3.5 h-3.5 text-amber-500" /> : <Layers className="w-3.5 h-3.5 text-amber-500" />}
                 <span>{isSNS ? "Year:" : "Series:"}</span>
@@ -163,7 +167,7 @@ export function SearchAndFilters({
               <select
                 value={selectedCategory}
                 onChange={(e) => onCategoryChange(e.target.value)}
-                className="w-full text-xs bg-[var(--surface-hover)] border border-[var(--card-border)] rounded-xl px-3 py-2 text-[var(--foreground)] focus:outline-none focus:border-amber-500 font-medium truncate"
+                className="w-full text-xs bg-[var(--surface-hover)] border border-[var(--card-border)] rounded-xl px-3 py-2 text-[var(--foreground)] focus:outline-none focus:border-amber-500 font-medium truncate cursor-pointer"
               >
                 <option value="">
                   {isSNS ? `All Years (${categories.length})` : `All Playlists & Series (${categories.length})`}
@@ -179,7 +183,7 @@ export function SearchAndFilters({
 
           {/* Subcategory Dropdown */}
           {subcategories.length > 0 && (
-            <div className="flex items-center gap-2 flex-1 min-w-[220px] sm:max-w-xs">
+            <div className="flex items-center gap-2 flex-1 min-w-[200px] sm:max-w-xs">
               <span className="text-xs font-semibold text-[var(--muted)] flex items-center gap-1 shrink-0">
                 <Folder className="w-3.5 h-3.5 text-amber-500" />
                 <span>Section:</span>
@@ -187,7 +191,7 @@ export function SearchAndFilters({
               <select
                 value={selectedSubcategory}
                 onChange={(e) => onSubcategoryChange(e.target.value)}
-                className="w-full text-xs bg-[var(--surface-hover)] border border-[var(--card-border)] rounded-xl px-3 py-2 text-[var(--foreground)] focus:outline-none focus:border-amber-500 font-medium truncate"
+                className="w-full text-xs bg-[var(--surface-hover)] border border-[var(--card-border)] rounded-xl px-3 py-2 text-[var(--foreground)] focus:outline-none focus:border-amber-500 font-medium truncate cursor-pointer"
               >
                 <option value="">All Subcategories ({subcategories.length})</option>
                 {subcategories.map((s) => (
@@ -200,20 +204,42 @@ export function SearchAndFilters({
           )}
 
           {/* Reset button when any dropdown is selected */}
-          {(selectedCategory || selectedSubcategory) && (
+          {(selectedCategory || selectedSubcategory || sortOption !== "default") && (
             <button
               onClick={() => {
                 onCategoryChange("");
                 onSubcategoryChange("");
+                onSortChange("default");
               }}
               className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400 hover:underline font-medium px-2 py-1"
             >
-              <span>Reset Dropdowns</span>
+              <span>Reset</span>
               <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
-      )}
+
+        {/* Sort Selector */}
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-xs font-semibold text-[var(--muted)] flex items-center gap-1 shrink-0">
+            <ArrowUpDown className="w-3.5 h-3.5 text-amber-500" />
+            <span>Sort:</span>
+          </span>
+          <select
+            value={sortOption}
+            onChange={(e) => onSortChange(e.target.value as SortOption)}
+            className="text-xs bg-[var(--surface-hover)] border border-[var(--card-border)] rounded-xl px-3 py-2 text-[var(--foreground)] focus:outline-none focus:border-amber-500 font-medium cursor-pointer"
+          >
+            <option value="default">Default Order</option>
+            <option value="date-desc">Date (Newest First)</option>
+            <option value="date-asc">Date (Oldest First)</option>
+            <option value="title-asc">Title (A to Z)</option>
+            <option value="title-desc">Title (Z to A)</option>
+            <option value="duration-desc">Duration (Longest)</option>
+            <option value="duration-asc">Duration (Shortest)</option>
+          </select>
+        </div>
+      </div>
     </div>
   );
 }

@@ -34,3 +34,12 @@ export interface SadhanaState {
   lastPlayedId: string | null;
   progress: Record<string, { currentTime: number; duration: number; updatedAt: string }>;
 }
+
+export type SortOption =
+  | 'default'
+  | 'date-desc'
+  | 'date-asc'
+  | 'title-asc'
+  | 'title-desc'
+  | 'duration-desc'
+  | 'duration-asc';
