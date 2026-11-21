@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-High-performance multithreaded YouTube upload_date backfill script for 'My Hearing'.
-Directly extracts datePublished from YouTube HTML metadata with persistent caching.
+Ultra-fast, robust YouTube upload_date backfill script for 'My Hearing'.
+Uses YouTube's Innertube API endpoint directly for instant JSON metadata without scraping HTML.
 
 Usage:
     python3 scripts/backfill_youtube_dates.py --speaker amarendra-das
@@ -10,7 +10,6 @@ Usage:
 import argparse
 import json
 import os
-import re
 import sys
 import time
 import urllib.request
@@ -22,7 +21,9 @@ DATA_DIR = os.path.join(REPO_ROOT, "data")
 SPEAKERS_DIR = os.path.join(DATA_DIR, "speakers")
 CACHE_FILE = os.path.join(DATA_DIR, ".yt_dates_cache.json")
 
+INNERTUBE_URL = "https://www.youtube.com/youtubei/v1/player?prettyPrint=false"
 HEADERS = {
+    "Content-Type": "application/json",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     "Accept-Language": "en-US,en;q=0.9",
 }
@@ -43,34 +44,38 @@ def save_cache(cache: dict):
         json.dump(cache, f, indent=2)
 
 
-def fetch_upload_date(yt_id: str) -> str:
-    url = f"https://www.youtube.com/watch?v={yt_id}"
-    req = urllib.request.Request(url, headers=HEADERS)
-    try:
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            html = resp.read().decode("utf-8", errors="ignore")
-            
-            # Pattern 1: itemprop="datePublished" content="2026-11-18T08:48:25-08:00"
-            m = re.search(r'itemprop=\"(?:datePublished|uploadDate)\"\s+content=\"([^\"]+)\"', html)
-            if m:
-                return m.group(1).split("T")[0]
-            
-            # Pattern 2: "publishDate":"2026-11-18..."
-            m = re.search(r'\"publishDate\":\"([^\"]+)\"', html)
-            if m:
-                return m.group(1).split("T")[0]
-                
-            # Pattern 3: "uploadDate":"2026-11-18..."
-            m = re.search(r'\"uploadDate\":\"([^\"]+)\"', html)
-            if m:
-                return m.group(1).split("T")[0]
-    except Exception as e:
-        # Fallback to simple regex or ignore
-        pass
+def fetch_upload_date(yt_id: str, retries: int = 2) -> str:
+    payload = {
+        "videoId": yt_id,
+        "context": {
+            "client": {
+                "clientName": "WEB",
+                "clientVersion": "2.20240313.01.00",
+                "hl": "en",
+                "gl": "US",
+            }
+        },
+    }
+    for attempt in range(retries):
+        req = urllib.request.Request(
+            INNERTUBE_URL,
+            data=json.dumps(payload).encode("utf-8"),
+            headers=HEADERS,
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                mf = data.get("microformat", {}).get("playerMicroformatRenderer", {})
+                raw_date = mf.get("publishDate") or mf.get("uploadDate") or ""
+                if raw_date:
+                    return raw_date.split("T")[0]
+        except Exception:
+            if attempt < retries - 1:
+                time.sleep(1.0)
     return ""
 
 
-def backfill_speaker(speaker_slug: str, cache: dict, max_workers: int = 12):
+def backfill_speaker(speaker_slug: str, cache: dict, max_workers: int = 10):
     speaker_file = os.path.join(SPEAKERS_DIR, f"{speaker_slug}.json")
     if not os.path.exists(speaker_file):
         print(f"File not found: {speaker_file}")
@@ -129,25 +134,25 @@ def backfill_speaker(speaker_slug: str, cache: dict, max_workers: int = 12):
                 failed_count += 1
 
             total_done = fetched_count + failed_count
-            if total_done % 20 == 0 or total_done == len(needed):
+            if total_done % 50 == 0 or total_done == len(needed):
                 elapsed = time.time() - start_time
                 rate = total_done / elapsed if elapsed > 0 else 0
                 print(f"  -> Progress: {total_done}/{len(needed)} done ({rate:.1f} vids/sec)...")
                 save_cache(cache)
 
-    # Save final speaker file
+    # Save speaker file
     with open(speaker_file, "w", encoding="utf-8") as f:
         json.dump(items, f, indent=2, ensure_ascii=False)
     save_cache(cache)
 
-    print(f"[{speaker_slug}] Finished! Successfully populated {fetched_count} dates ({failed_count} failed) in {time.time()-start_time:.1f}s.")
+    print(f"[{speaker_slug}] Finished! Populated {fetched_count} dates ({failed_count} failed) in {time.time()-start_time:.1f}s.")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Backfill upload_date for YouTube lectures")
     parser.add_argument("--speaker", default="", help="Speaker slug (e.g. amarendra-das)")
     parser.add_argument("--all", action="store_true", help="Backfill all YouTube speakers")
-    parser.add_argument("--workers", type=int, default=12, help="Number of concurrent workers (default: 12)")
+    parser.add_argument("--workers", type=int, default=10, help="Number of concurrent workers (default: 10)")
     args = parser.parse_args()
 
     cache = load_cache()
@@ -158,8 +163,8 @@ def main():
     elif args.all:
         speakers = [
             "amarendra-das",
-            "madhavananda-das",
             "indradyumna-swami",
+            "madhavananda-das",
             "balaram-shakti-das",
             "keshav-anand-das",
         ]
