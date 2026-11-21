@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Lecture } from "@/types";
 import {
   Play,
@@ -19,6 +19,13 @@ import {
   Loader2,
 } from "lucide-react";
 
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
 interface UnifiedPlayerProps {
   currentLecture: Lecture | null;
   isPlaying: boolean;
@@ -28,6 +35,29 @@ interface UnifiedPlayerProps {
   onClose: () => void;
   onSaveProgress?: (id: string, currentTime: number, duration: number) => void;
   initialTime?: number;
+}
+
+// Parse "HH:MM:SS" or "MM:SS" into seconds
+function parseDurationToSeconds(durStr?: string): number {
+  if (!durStr) return 0;
+  const parts = durStr.trim().split(":").map(Number);
+  if (parts.some(isNaN)) return 0;
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  if (parts.length === 2) return parts[0] * 60 + parts[1];
+  if (parts.length === 1) return parts[0];
+  return 0;
+}
+
+// Format seconds into "HH:MM:SS" or "M:SS"
+function formatTime(seconds: number, forceHours = false): string {
+  if (isNaN(seconds) || seconds < 0) return forceHours ? "0:00:00" : "0:00";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  if (h > 0 || forceHours) {
+    return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  }
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 export function UnifiedPlayer({
@@ -50,8 +80,10 @@ export function UnifiedPlayer({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ytIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const ytPlayerRef = useRef<any>(null);
   const currentMediaUrlRef = useRef<string | null>(null);
   const initialSeekDoneRef = useRef(false);
+  const isSeekingRef = useRef(false);
   const lastSavedTimeRef = useRef<number>(0);
 
   const isAudio = currentLecture?.source_type === "audio";
@@ -60,13 +92,33 @@ export function UnifiedPlayer({
       ? currentLecture.yt_id || (currentLecture.id.startsWith("yt:") ? currentLecture.id.replace("yt:", "") : "")
       : "";
 
-  // Reset timestamps when lecture changes
+  // Reset & preload duration whenever current lecture changes
   useEffect(() => {
     setCurrentTime(initialTime);
-    setDuration(0);
+    const parsedDur = parseDurationToSeconds(currentLecture?.duration);
+    setDuration(parsedDur);
     initialSeekDoneRef.current = false;
     setIsBuffering(false);
-  }, [currentLecture?.id]);
+  }, [currentLecture?.id, currentLecture?.duration, initialTime]);
+
+  // Load YouTube IFrame API script once globally
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.YT && window.YT.Player) return;
+
+    const existingScript = document.getElementById("youtube-iframe-api");
+    if (!existingScript) {
+      const tag = document.createElement("script");
+      tag.id = "youtube-iframe-api";
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName("script")[0];
+      if (firstScriptTag && firstScriptTag.parentNode) {
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      } else {
+        document.head.appendChild(tag);
+      }
+    }
+  }, []);
 
   // Audio HTML5 setup - Only re-run when media URL changes to prevent stream interruptions!
   useEffect(() => {
@@ -81,9 +133,9 @@ export function UnifiedPlayer({
       audio.load();
       audio.playbackRate = playbackRate;
     }
-  }, [currentLecture?.media_url, isAudio]);
+  }, [currentLecture?.media_url, isAudio, playbackRate]);
 
-  // Handle audio metadata & canplay to apply initialTime once without resetting the stream
+  // Handle audio metadata & canplay to apply initialTime once
   const handleLoadedMetadata = () => {
     if (!audioRef.current) return;
     const dur = audioRef.current.duration || 0;
@@ -102,8 +154,14 @@ export function UnifiedPlayer({
     }
   };
 
-  // Helper to send commands to YouTube iframe via postMessage
-  const sendYtCommand = (func: string, args: any[] = []) => {
+  // Helper to send commands to YouTube iframe via postMessage fallback
+  const sendYtCommand = useCallback((func: string, args: any[] = []) => {
+    if (ytPlayerRef.current && typeof ytPlayerRef.current[func] === "function") {
+      try {
+        ytPlayerRef.current[func](...args);
+        return;
+      } catch {}
+    }
     if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
       ytIframeRef.current.contentWindow.postMessage(
         JSON.stringify({
@@ -114,10 +172,10 @@ export function UnifiedPlayer({
         "*"
       );
     }
-  };
+  }, []);
 
-  // Immediate progress flush on pause or close
-  const flushProgress = () => {
+  // Flush progress immediately
+  const flushProgress = useCallback(() => {
     if (onSaveProgress && currentLecture) {
       const cur = isAudio ? (audioRef.current?.currentTime || currentTime) : currentTime;
       const dur = isAudio ? (audioRef.current?.duration || duration) : duration;
@@ -126,11 +184,57 @@ export function UnifiedPlayer({
         lastSavedTimeRef.current = Date.now();
       }
     }
-  };
+  }, [currentLecture, isAudio, currentTime, duration, onSaveProgress]);
 
   const handleClose = () => {
     flushProgress();
     onClose();
+  };
+
+  // Initialize YT.Player on iframe load
+  const handleIframeLoad = () => {
+    // Send postMessage listening handshake
+    if (ytIframeRef.current?.contentWindow) {
+      ytIframeRef.current.contentWindow.postMessage(
+        JSON.stringify({ event: "listening" }),
+        "*"
+      );
+    }
+
+    // Bind official YT.Player if available
+    if (window.YT && window.YT.Player && ytIframeRef.current) {
+      try {
+        ytPlayerRef.current = new window.YT.Player(ytIframeRef.current, {
+          events: {
+            onReady: (event: any) => {
+              const dur = event.target.getDuration();
+              if (dur > 0) setDuration(dur);
+              if (initialTime > 0) {
+                event.target.seekTo(initialTime, true);
+              }
+              if (isPlaying) {
+                event.target.playVideo();
+              }
+            },
+            onStateChange: (event: any) => {
+              // 1: PLAYING, 2: PAUSED, 3: BUFFERING, 0: ENDED
+              if (event.data === 1) {
+                setIsBuffering(false);
+                const dur = event.target.getDuration();
+                if (dur > 0) setDuration(dur);
+              } else if (event.data === 3) {
+                setIsBuffering(true);
+              } else if (event.data === 0) {
+                flushProgress();
+                if (currentLecture) onToggleHeard(currentLecture.id);
+              }
+            },
+          },
+        });
+      } catch (e) {
+        console.warn("Could not bind YT.Player to iframe:", e);
+      }
+    }
   };
 
   // Sync play/pause state for both audio and YouTube
@@ -152,7 +256,7 @@ export function UnifiedPlayer({
         flushProgress();
       }
     }
-  }, [isPlaying, isAudio, ytId]);
+  }, [isPlaying, isAudio, ytId, sendYtCommand, flushProgress]);
 
   // Sync playbackRate
   useEffect(() => {
@@ -161,7 +265,7 @@ export function UnifiedPlayer({
     } else if (!isAudio && ytId) {
       sendYtCommand("setPlaybackRate", [playbackRate]);
     }
-  }, [playbackRate, isAudio, ytId]);
+  }, [playbackRate, isAudio, ytId, sendYtCommand]);
 
   // Sync volume and mute
   useEffect(() => {
@@ -175,9 +279,45 @@ export function UnifiedPlayer({
         sendYtCommand("setVolume", [Math.round(volume * 100)]);
       }
     }
-  }, [volume, isMuted, isAudio, ytId]);
+  }, [volume, isMuted, isAudio, ytId, sendYtCommand]);
 
-  // Listen for YouTube iframe events (time update, duration, completion)
+  // High-reliability playback ticker for YouTube mode
+  useEffect(() => {
+    if (isAudio || !isPlaying) return;
+
+    const interval = setInterval(() => {
+      if (isSeekingRef.current) return;
+
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.getCurrentTime === "function") {
+        try {
+          const cur = ytPlayerRef.current.getCurrentTime();
+          const dur = ytPlayerRef.current.getDuration();
+          if (typeof cur === "number" && !isNaN(cur)) {
+            setCurrentTime(cur);
+            const now = Date.now();
+            if (now - lastSavedTimeRef.current > 5000 && currentLecture) {
+              lastSavedTimeRef.current = now;
+              onSaveProgress?.(currentLecture.id, cur, dur || duration);
+            }
+          }
+          if (typeof dur === "number" && dur > 0 && !isNaN(dur)) {
+            setDuration(dur);
+          }
+          return;
+        } catch {}
+      }
+
+      // Smooth fallback increment if YT.Player is not responding
+      setCurrentTime((prev) => {
+        const next = prev + 0.5 * playbackRate;
+        return duration > 0 ? Math.min(duration, next) : next;
+      });
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [isAudio, isPlaying, playbackRate, duration, currentLecture, onSaveProgress]);
+
+  // PostMessage listener fallback for YouTube iframe
   useEffect(() => {
     if (isAudio) return;
 
@@ -186,7 +326,7 @@ export function UnifiedPlayer({
       try {
         const data = JSON.parse(event.data);
         if (data.event === "infoDelivery" && data.info) {
-          if (typeof data.info.currentTime === "number") {
+          if (typeof data.info.currentTime === "number" && !isSeekingRef.current) {
             const cur = data.info.currentTime;
             const dur = data.info.duration || duration;
             setCurrentTime(cur);
@@ -194,11 +334,9 @@ export function UnifiedPlayer({
               setDuration(dur);
             }
             const now = Date.now();
-            if (now - lastSavedTimeRef.current > 5000) {
+            if (now - lastSavedTimeRef.current > 5000 && currentLecture) {
               lastSavedTimeRef.current = now;
-              if (onSaveProgress && currentLecture) {
-                onSaveProgress(currentLecture.id, cur, dur);
-              }
+              onSaveProgress?.(currentLecture.id, cur, dur);
             }
           }
           if (typeof data.info.duration === "number" && data.info.duration > 0) {
@@ -209,19 +347,18 @@ export function UnifiedPlayer({
             onToggleHeard(currentLecture.id);
           }
         }
-      } catch {
-        // Ignore non-json messages
-      }
+      } catch {}
     };
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [isAudio, currentLecture?.id, duration, onSaveProgress, onToggleHeard]);
+  }, [isAudio, currentLecture, duration, onSaveProgress, onToggleHeard, flushProgress]);
 
   if (!currentLecture) return null;
 
+  // HTML5 audio onTimeUpdate handler
   const handleTimeUpdate = () => {
-    if (audioRef.current && currentLecture) {
+    if (audioRef.current && currentLecture && !isSeekingRef.current) {
       const cur = audioRef.current.currentTime;
       const dur = audioRef.current.duration || 0;
       setCurrentTime(cur);
@@ -230,55 +367,76 @@ export function UnifiedPlayer({
       }
       setIsBuffering(false);
 
-      // Throttle progress save to avoid re-rendering loops
       const now = Date.now();
       if (now - lastSavedTimeRef.current > 5000) {
         lastSavedTimeRef.current = now;
-        if (onSaveProgress) {
-          onSaveProgress(currentLecture.id, cur, dur);
-        }
+        onSaveProgress?.(currentLecture.id, cur, dur);
       }
     }
   };
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Direct Seek to absolute timestamp
+  const handleSeek = (val: number) => {
+    const target = Math.max(0, duration > 0 ? Math.min(duration, val) : val);
+    setCurrentTime(target);
+
+    if (isAudio && audioRef.current) {
+      audioRef.current.currentTime = target;
+    } else if (!isAudio) {
+      let seekDone = false;
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.seekTo === "function") {
+        try {
+          ytPlayerRef.current.seekTo(target, true);
+          seekDone = true;
+        } catch {}
+      }
+      if (!seekDone) {
+        sendYtCommand("seekTo", [target, true]);
+      }
+    }
+    lastSavedTimeRef.current = 0;
+  };
+
+  // Slider change while dragging
+  const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseFloat(e.target.value);
+    isSeekingRef.current = true;
     setCurrentTime(val);
-    if (isAudio && audioRef.current) {
-      audioRef.current.currentTime = val;
-    } else if (!isAudio && ytId) {
-      sendYtCommand("seekTo", [val, true]);
-    }
-    lastSavedTimeRef.current = 0;
   };
 
+  // Slider release / commit
+  const handleSeekCommit = (val: number) => {
+    isSeekingRef.current = false;
+    handleSeek(val);
+  };
+
+  // Skip relative ± seconds
   const skipTime = (seconds: number) => {
-    if (isAudio && audioRef.current) {
-      const newTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + seconds));
-      audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
-    } else if (!isAudio && ytId) {
-      const newTime = Math.max(0, currentTime + seconds);
-      setCurrentTime(newTime);
-      sendYtCommand("seekTo", [newTime, true]);
-    }
-    lastSavedTimeRef.current = 0;
+    const cur = currentTime;
+    const maxDur = duration > 0 ? duration : Infinity;
+    const newTime = Math.max(0, Math.min(maxDur, cur + seconds));
+    handleSeek(newTime);
   };
 
-  const formatTime = (seconds: number) => {
-    if (isNaN(seconds) || seconds < 0) return "0:00";
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.floor(seconds % 60);
-    if (h > 0) {
-      return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-    }
-    return `${m}:${s.toString().padStart(2, "0")}`;
+  // Click on the top micro-progress bar
+  const handleTopBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (duration <= 0) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const fraction = Math.max(0, Math.min(1, clickX / rect.width));
+    handleSeek(fraction * duration);
   };
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
+
+  const progressPercent = duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
+  const hasHours = duration >= 3600;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 transition-all duration-300">
-      {/* YouTube Player - Always mounted in DOM for immediate audio playback */}
+      {/* YouTube Player - Mounted in DOM for audio playback, expands in video mode */}
       {!isAudio && ytId && (
         <div
           className={`transition-all duration-300 ${
@@ -304,6 +462,7 @@ export function UnifiedPlayer({
           <div key="yt-iframe-container" className="relative aspect-video w-full bg-black">
             <iframe
               ref={ytIframeRef}
+              id="unified-yt-iframe"
               key={ytId}
               src={`https://www.youtube.com/embed/${ytId}?enablejsapi=1&autoplay=1${
                 initialTime > 0 ? `&start=${Math.floor(initialTime)}` : ""
@@ -311,6 +470,7 @@ export function UnifiedPlayer({
               className="w-full h-full border-0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              onLoad={handleIframeLoad}
             />
           </div>
         </div>
@@ -339,13 +499,30 @@ export function UnifiedPlayer({
         />
       )}
 
+      {/* Sleek Top Edge Full-Width Micro-Scrubber Line (Zero Bulk, 1-Click Seek Anywhere) */}
+      <div
+        className="group/topbar relative w-full h-1 hover:h-2 cursor-pointer transition-all z-20 -mb-1"
+        onClick={handleTopBarClick}
+        title={duration > 0 ? `Click to seek anywhere (${formatTime(currentTime)} / ${formatTime(duration)})` : "Streaming..."}
+      >
+        <div className="w-full h-full bg-stone-300/40 dark:bg-stone-700/40 overflow-hidden">
+          <div
+            className="h-full bg-amber-500 transition-all duration-100 relative"
+            style={{ width: `${progressPercent}%` }}
+          >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-xs opacity-0 group-hover/topbar:opacity-100 transition-opacity" />
+          </div>
+        </div>
+      </div>
+
       {/* Main Sticky Bottom Player Bar */}
-      <div className="bg-[var(--surface)] border-t border-[var(--card-border)] shadow-2xl px-4 py-3 backdrop-blur-lg">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-          {/* Lecture Metadata */}
+      <div className="bg-[var(--surface)] border-t border-[var(--card-border)] shadow-2xl px-4 py-2.5 backdrop-blur-lg">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2.5 md:gap-4">
+          
+          {/* 1. Left: Lecture Metadata */}
           <div className="flex items-center gap-3 w-full md:w-1/3 min-w-0">
             {/* Thumbnail or Audio Icon */}
-            <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-stone-900 border border-[var(--card-border)] flex items-center justify-center shadow-xs">
+            <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0 bg-stone-900 border border-[var(--card-border)] flex items-center justify-center shadow-xs">
               {!isAudio && (currentLecture.yt_id || currentLecture.id.startsWith("yt:")) ? (
                 <img
                   src={`https://i.ytimg.com/vi/${currentLecture.yt_id || currentLecture.id.replace("yt:", "")}/mqdefault.jpg`}
@@ -363,10 +540,19 @@ export function UnifiedPlayer({
               <h4 className="text-xs sm:text-sm font-semibold text-[var(--foreground)] truncate" title={currentLecture.title}>
                 {currentLecture.title}
               </h4>
-              <div className="flex items-center gap-2 text-[11px] text-[var(--muted)] truncate">
-                <span className="font-medium text-amber-600 dark:text-amber-400">{currentLecture.speaker}</span>
+              <div className="flex items-center gap-1.5 text-[11px] text-[var(--muted)] truncate">
+                <span className="font-medium text-amber-600 dark:text-amber-400 truncate">{currentLecture.speaker}</span>
                 <span>•</span>
                 <span className="truncate">{currentLecture.category}</span>
+                {!isAudio && (
+                  <>
+                    <span>•</span>
+                    <span className="inline-flex items-center gap-1 text-[10px] text-amber-600/80 dark:text-amber-400/80 shrink-0 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                      YT Audio
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
@@ -384,14 +570,15 @@ export function UnifiedPlayer({
             </button>
           </div>
 
-          {/* Center Playback Controls */}
-          <div className="flex flex-col items-center gap-1.5 w-full md:w-1/3">
+          {/* 2. Center: Controls & Audio Seek Bar (Compact, Non-Bulky, Devotional) */}
+          <div className="flex flex-col items-center gap-1 w-full md:w-5/12 max-w-md">
+            {/* Playback Trigger Buttons */}
             <div className="flex items-center gap-4">
               {/* Rewind 10s */}
               <button
                 onClick={() => skipTime(-10)}
                 title="Rewind 10s"
-                className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all"
+                className="p-1 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all active:scale-95"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
@@ -399,14 +586,14 @@ export function UnifiedPlayer({
               {/* Play / Pause Main Trigger */}
               <button
                 onClick={onTogglePlay}
-                className="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center shadow-md shadow-amber-500/30 transition-transform active:scale-95"
+                className="w-9 h-9 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center shadow-md shadow-amber-500/30 transition-transform active:scale-95"
               >
                 {isPlaying && isBuffering ? (
-                  <Loader2 className="w-5 h-5 animate-spin text-white" />
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
                 ) : isPlaying ? (
-                  <Pause className="w-5 h-5 fill-current" />
+                  <Pause className="w-4 h-4 fill-current" />
                 ) : (
-                  <Play className="w-5 h-5 fill-current ml-0.5" />
+                  <Play className="w-4 h-4 fill-current ml-0.5" />
                 )}
               </button>
 
@@ -414,52 +601,60 @@ export function UnifiedPlayer({
               <button
                 onClick={() => skipTime(10)}
                 title="Forward 10s"
-                className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all"
+                className="p-1 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all active:scale-95"
               >
                 <RotateCw className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Scrubber & Timestamps */}
-            {duration > 0 ? (
-              <div className="flex items-center gap-2 w-full max-w-sm text-[11px] text-[var(--muted)] font-mono">
-                <span>{formatTime(currentTime)}</span>
+            {/* Audio Seek Scrubber & Precision Timestamps */}
+            <div className="flex items-center gap-2 w-full text-[10px] sm:text-[11px] text-[var(--muted)] font-mono select-none">
+              {/* Current Elapsed Time */}
+              <span className="w-10 sm:w-12 text-right shrink-0 tabular-nums font-medium">
+                {formatTime(currentTime, hasHours)}
+              </span>
+
+              {/* Range Slider with Dynamic Amber Fill */}
+              <div className="relative flex-1 flex items-center group py-0.5">
                 <input
                   type="range"
                   min="0"
-                  max={duration || 100}
+                  max={duration > 0 ? duration : 100}
+                  step="1"
                   value={currentTime}
-                  onChange={handleSeek}
-                  className="w-full h-1 bg-[var(--card-border)] rounded-lg appearance-none cursor-pointer accent-amber-500"
+                  onChange={handleSeekChange}
+                  onMouseDown={() => { isSeekingRef.current = true; }}
+                  onMouseUp={(e) => handleSeekCommit(parseFloat((e.target as HTMLInputElement).value))}
+                  onTouchStart={() => { isSeekingRef.current = true; }}
+                  onTouchEnd={(e) => handleSeekCommit(parseFloat((e.target as HTMLInputElement).value))}
+                  className="audio-seek-slider w-full h-1 group-hover:h-1.5 rounded-full appearance-none cursor-pointer transition-all"
+                  style={{
+                    background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${progressPercent}%, var(--card-border) ${progressPercent}%, var(--card-border) 100%)`,
+                  }}
+                  title={duration > 0 ? `Seek (${formatTime(currentTime)} / ${formatTime(duration)})` : "Connecting audio..."}
                 />
-                <span>{formatTime(duration)}</span>
-                {isBuffering && (
-                  <span className="text-[10px] text-amber-500 font-sans font-medium flex items-center gap-1 shrink-0">
-                    <Loader2 className="w-2.5 h-2.5 animate-spin" /> Buffering
+              </div>
+
+              {/* Total Duration or Buffering status */}
+              <span className="w-10 sm:w-12 text-left shrink-0 tabular-nums font-medium flex items-center gap-1">
+                {duration > 0 ? (
+                  formatTime(duration, hasHours)
+                ) : (
+                  <span className="text-[10px] text-amber-500 font-sans flex items-center gap-1 font-medium">
+                    <Loader2 className="w-2.5 h-2.5 animate-spin" /> Live
                   </span>
                 )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-1.5 text-[11px] text-[var(--muted)]">
-                <span className="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                <span>
-                  {isBuffering
-                    ? "Buffering audio stream..."
-                    : !isAudio
-                    ? "YouTube Audio Stream"
-                    : "Connecting audio..."}
-                </span>
-              </div>
-            )}
+              </span>
+            </div>
           </div>
 
-          {/* Right Tools: Speed, Volume, Toggle Video Drawer, Close */}
-          <div className="flex items-center justify-end gap-2 w-full md:w-1/3">
+          {/* 3. Right: Tools (Speed, Volume, Video Drawer, External, Close) */}
+          <div className="flex items-center justify-end gap-1.5 w-full md:w-1/3">
             {/* Playback Rate */}
             <select
               value={playbackRate}
               onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
-              className="text-xs bg-[var(--surface-hover)] border border-[var(--card-border)] rounded-lg px-2 py-1 text-[var(--foreground)] focus:outline-none focus:border-amber-500"
+              className="text-xs bg-[var(--surface-hover)] border border-[var(--card-border)] rounded-lg px-2 py-1 text-[var(--foreground)] focus:outline-none focus:border-amber-500 cursor-pointer"
             >
               <option value="0.75">0.75x</option>
               <option value="1">1.0x</option>
@@ -469,13 +664,26 @@ export function UnifiedPlayer({
               <option value="2">2.0x</option>
             </select>
 
+            {/* Volume / Mute Toggle */}
+            <button
+              onClick={toggleMute}
+              title={isMuted ? "Unmute" : "Mute"}
+              className={`p-1.5 rounded-lg transition-colors ${
+                isMuted
+                  ? "text-amber-500 bg-amber-500/10"
+                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
+              }`}
+            >
+              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </button>
+
             {/* Video Drawer Toggle for YouTube */}
             {!isAudio && (
               <button
                 onClick={() => setShowVideoDrawer(!showVideoDrawer)}
-                className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-xl font-medium border transition-all ${
+                className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-xl font-medium border transition-all ${
                   showVideoDrawer
-                    ? "bg-amber-500 text-white border-amber-600 shadow-sm"
+                    ? "bg-amber-500 text-white border-amber-600 shadow-xs"
                     : "bg-[var(--surface-hover)] border-[var(--card-border)] text-[var(--foreground)] hover:border-amber-500/50"
                 }`}
                 title={showVideoDrawer ? "Switch to Audio-Only Mode" : "Show Video"}

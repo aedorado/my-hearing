@@ -56,3 +56,62 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
 }
+
+/* Custom Audio Seek Range Slider */
+input[type="range"].audio-seek-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"].audio-seek-slider:focus {
+  outline: none;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+input[type="range"].audio-seek-slider::-webkit-slider-runnable-track {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+input[type="range"].audio-seek-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+  margin-top: -3px;
+  transition: transform 0.15s ease, width 0.15s ease, height 0.15s ease;
+}
+
+input[type="range"].audio-seek-slider:hover::-webkit-slider-thumb {
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  transform: scale(1.15);
+}
+
+/* Firefox */
+input[type="range"].audio-seek-slider::-moz-range-track {
+  height: 100%;
+  border-radius: 9999px;
+}
+
+input[type="range"].audio-seek-slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: none;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"].audio-seek-slider:hover::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  transform: scale(1.15);
+}

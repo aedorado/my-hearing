@@ -108,7 +108,18 @@ export function CatalogueClient({
   const activeCategories = useMemo(() => {
     if (selectedSpeakerSlug) {
       const sp = initialSpeakers.find((s) => s.slug === selectedSpeakerSlug);
-      return sp ? sp.categories : [];
+      if (!sp) return [];
+      if (selectedSpeakerSlug === "sacinandana-swami") {
+        return [...sp.categories].sort((a, b) => {
+          const numA = parseInt(a.name, 10);
+          const numB = parseInt(b.name, 10);
+          if (!isNaN(numA) && !isNaN(numB)) {
+            return numB - numA;
+          }
+          return b.name.localeCompare(a.name);
+        });
+      }
+      return sp.categories;
     }
     // Global unique categories
     const catMap = new Map<string, number>();

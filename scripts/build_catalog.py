@@ -71,17 +71,37 @@ def main():
             clean_speaker_items.append(item)
             all_lectures.append(item)
 
+        # Sort categories for speaker (Sacinandana Swami has years in descending order)
+        if slug == "sacinandana-swami":
+            sorted_categories = sorted(categories.items(), key=lambda x: -int(x[0]) if x[0].isdigit() else x[0])
+        else:
+            sorted_categories = sorted(categories.items(), key=lambda x: x[0].lower())
+
         speaker_stats.append({
             "name": sp["name"],
             "slug": slug,
             "description": sp["description"],
             "total_lectures": len(clean_speaker_items),
             "sources": sorted(list(sources)),
-            "categories": [{"name": k, "count": v} for k, v in sorted(categories.items(), key=lambda x: x[0].lower())],
+            "categories": [{"name": k, "count": v} for k, v in sorted_categories],
         })
 
-    # Sort lectures: Speaker name -> Category -> Title
-    all_lectures.sort(key=lambda x: (x.get("speaker", "").lower(), x.get("category", "").lower(), x.get("title", "").lower()))
+    # Sort lectures:
+    # For Sacinandana Swami: Speaker -> Year Descending -> Upload Date Ascending -> Title Ascending
+    # For others: Speaker -> Category -> Title
+    def lecture_sort_key(x):
+        sp = x.get("speaker", "").lower()
+        if x.get("speaker_slug") == "sacinandana-swami":
+            try:
+                y = int(x.get("category", 0))
+            except ValueError:
+                y = 0
+            d = x.get("upload_date", "") or ""
+            t = x.get("title", "").lower()
+            return (sp, -y, d, t)
+        return (sp, x.get("category", "").lower(), x.get("title", "").lower())
+
+    all_lectures.sort(key=lecture_sort_key)
 
     # Write catalog.json
     with open(CATALOG_JSON, "w", encoding="utf-8") as f:
