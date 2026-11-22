@@ -136,7 +136,7 @@
     "name": "Hari Parshad Das",
     "slug": "hari-parshad-das",
     "description": "Scholarly Vaishnava katha, Upadeshamrita & Caitanya Caritamrta",
-    "total_lectures": 675,
+    "total_lectures": 747,
     "sources": [
       "youtube"
     ],
@@ -147,7 +147,7 @@
       },
       {
         "name": "Bhagavad Gita",
-        "count": 18
+        "count": 21
       },
       {
         "name": "Bhakti-rasamrita-sindhu",
@@ -162,12 +162,20 @@
         "count": 31
       },
       {
+        "name": "Damodara Lila (Seminar)",
+        "count": 1
+      },
+      {
         "name": "Dhama Tattva & Sacred Places",
         "count": 6
       },
       {
         "name": "Festivals & Temple Seva",
         "count": 8
+      },
+      {
+        "name": "Gaudiya Vaishnava Vaishishtya (Seminar)",
+        "count": 2
       },
       {
         "name": "Grihastha Ashrama & Family Life",
@@ -178,8 +186,20 @@
         "count": 4
       },
       {
-        "name": "Japa, Kirtan & Harinama",
+        "name": "HG Madhavananda Das",
+        "count": 3
+      },
+      {
+        "name": "HH Gour Govinda Swami",
         "count": 20
+      },
+      {
+        "name": "HH Radha Govinda Dasa Goswami",
+        "count": 1
+      },
+      {
+        "name": "Japa, Kirtan & Harinama",
+        "count": 27
       },
       {
         "name": "Lord Balarama",
@@ -187,7 +207,7 @@
       },
       {
         "name": "Lord Jagannatha",
-        "count": 5
+        "count": 6
       },
       {
         "name": "Lord Narasimhadeva",
@@ -207,11 +227,11 @@
       },
       {
         "name": "Practical Bhakti & Sadhana",
-        "count": 31
+        "count": 38
       },
       {
         "name": "Q&A, Podcasts & Interviews",
-        "count": 21
+        "count": 28
       },
       {
         "name": "Sanskrit Stotras & Recitations",
@@ -219,7 +239,7 @@
       },
       {
         "name": "Sharad Poornima (Seminar)",
-        "count": 6
+        "count": 7
       },
       {
         "name": "Sri Caitanya Bhagavata",
@@ -231,7 +251,11 @@
       },
       {
         "name": "Sri Caitanya Mahaprabhu (Gaura Tattva)",
-        "count": 9
+        "count": 11
+      },
+      {
+        "name": "Sri Guru & Parampara",
+        "count": 1
       },
       {
         "name": "Sri Krishna & Vraja Lila",
@@ -239,15 +263,15 @@
       },
       {
         "name": "Sri Padyavali (Seminar)",
-        "count": 25
+        "count": 27
       },
       {
         "name": "Srimad Bhagavatam",
-        "count": 85
+        "count": 98
       },
       {
         "name": "Srimati Radharani (Radha Tattva)",
-        "count": 14
+        "count": 15
       },
       {
         "name": "The Gaudiya Acaryas",
