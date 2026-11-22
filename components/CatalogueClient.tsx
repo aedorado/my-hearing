@@ -8,6 +8,7 @@ import { SearchAndFilters } from "./SearchAndFilters";
 import { LectureCard } from "./LectureCard";
 import { UnifiedPlayer } from "./UnifiedPlayer";
 import { SadhanaStatsModal } from "./SadhanaStatsModal";
+import { Footer } from "./Footer";
 import { useSadhana } from "@/hooks/useSadhana";
 import { Headphones, Sparkles, RotateCcw, Play, Loader2 } from "lucide-react";
 
@@ -400,6 +401,13 @@ export function CatalogueClient({
           </div>
         )}
       </main>
+
+      {/* Minimalist Devotional Footer */}
+      <Footer
+        totalLectures={totalCatalogLectures}
+        speakerCount={initialSpeakers.length}
+        onOpenStats={() => setIsStatsOpen(true)}
+      />
 
       {/* Unified Bottom Player */}
       <UnifiedPlayer
